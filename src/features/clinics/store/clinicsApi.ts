@@ -1,4 +1,5 @@
 import { baseApi } from "@/store/baseApi";
+import { stringifyApiDate } from "../lib/date";
 import {
   normalizeAvailableSlots,
   normalizeClinic,
@@ -78,10 +79,13 @@ export const clinicsApi = baseApi.injectEndpoints({
       AvailableSlot[],
       { clinicId: string; date: string }
     >({
-      query: ({ clinicId, date }) => ({
-        url: `/clinic/all-available-slots/${clinicId}`,
-        params: { date },
-      }),
+      query: ({ clinicId, date }) => {
+        const dateParam = stringifyApiDate(date);
+        return {
+          url: `/clinic/all-available-slots/${clinicId}`,
+          params: { date: dateParam },
+        };
+      },
       transformResponse: (raw: unknown) => normalizeAvailableSlots(raw),
       providesTags: (_result, _error, { clinicId, date }) => [
         { type: "Clinic" as const, id: `SLOTS-${clinicId}-${date}` },

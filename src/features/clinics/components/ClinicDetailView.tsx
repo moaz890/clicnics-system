@@ -30,7 +30,13 @@ export function ClinicDetailView({ clinicId }: ClinicDetailViewProps) {
 
   if (isLoading) {
     return (
-      <div className="space-y-4 p-6 sm:p-8">
+      <div
+        role="status"
+        aria-live="polite"
+        aria-busy="true"
+        aria-label={t("loadingClinic")}
+        className="space-y-4 p-6 sm:p-8"
+      >
         <Skeleton className="h-8 w-48" />
         <Skeleton className="h-64 w-full rounded-xl" />
       </div>
@@ -40,7 +46,9 @@ export function ClinicDetailView({ clinicId }: ClinicDetailViewProps) {
   if (isError || !clinic) {
     return (
       <div className="p-6 sm:p-8">
-        <p className="text-sm text-destructive">{t("clinicNotFound")}</p>
+        <p role="alert" className="text-sm text-destructive">
+          {t("clinicNotFound")}
+        </p>
         <Link
           href="/dashboard/clinics"
           className="mt-2 inline-flex cursor-pointer text-sm font-medium text-primary hover:underline"
@@ -85,6 +93,7 @@ export function ClinicDetailView({ clinicId }: ClinicDetailViewProps) {
       <Tabs defaultValue="overview" className="gap-6">
         <TabsList
           variant="line"
+          aria-label={t("pageTitle")}
           className="h-auto w-full justify-start gap-1 overflow-x-auto bg-transparent p-0"
         >
           <TabsTrigger value="overview" className="cursor-pointer px-4 py-2">

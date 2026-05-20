@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import {
   Eye,
   EyeOff,
@@ -32,6 +33,7 @@ export const AuthFormInput = forwardRef<HTMLInputElement, AuthFormInputProps>(
     { icon = "email", type = "text", className, placeholder, ...props },
     ref,
   ) {
+    const t = useTranslations("auth");
     const [visible, setVisible] = useState(false);
     const isPassword = type === "password";
     const inputType = isPassword && visible ? "text" : type;
@@ -61,7 +63,8 @@ export const AuthFormInput = forwardRef<HTMLInputElement, AuthFormInputProps>(
             type="button"
             onClick={() => setVisible((v) => !v)}
             className="absolute end-2 top-1/2 z-10 -translate-y-1/2 cursor-pointer rounded-md p-1.5 text-muted-foreground transition-colors hover:text-popover-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
-            aria-label={visible ? "Hide password" : "Show password"}
+            aria-label={visible ? t("hidePassword") : t("showPassword")}
+            aria-pressed={visible}
           >
             {visible ? (
               <EyeOff className="size-4" strokeWidth={1.75} />

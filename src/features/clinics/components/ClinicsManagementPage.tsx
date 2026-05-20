@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import { Building2, Plus } from "lucide-react";
 import { useTranslations } from "next-intl";
 import {
@@ -17,6 +17,7 @@ import { DeleteClinicDialog } from "./DeleteClinicDialog";
 
 export function ClinicsManagementPage() {
   const t = useTranslations("clinics");
+  const reduceMotion = useReducedMotion();
   const { data: clinics = [] } = useGetClinicsQuery();
 
   const [formOpen, setFormOpen] = useState(false);
@@ -70,9 +71,9 @@ export function ClinicsManagementPage() {
       </motion.header>
 
       <motion.div
-        initial={{ opacity: 0, y: 10 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.05 }}
+        initial={reduceMotion ? false : { opacity: 0, y: 10 }}
+        animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+        transition={reduceMotion ? undefined : { delay: 0.05 }}
       >
         <Card className="border-border/80 bg-card shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between gap-4 pb-2">
@@ -98,9 +99,9 @@ export function ClinicsManagementPage() {
       </motion.div>
 
       <motion.div
-        initial={{ opacity: 0, y: 12 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.1 }}
+        initial={reduceMotion ? false : { opacity: 0, y: 12 }}
+        animate={reduceMotion ? false : { opacity: 1, y: 0 }}
+        transition={reduceMotion ? undefined : { delay: 0.1 }}
       >
         <ClinicsTable
           onEdit={openEdit}

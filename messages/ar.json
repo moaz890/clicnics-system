@@ -46,6 +46,8 @@
     "loginError": "البريد أو كلمة المرور غير صحيحة. حاول مرة أخرى.",
     "registerError": "تعذر إنشاء الحساب. حاول مرة أخرى.",
     "socialComingSoon": "تسجيل الدخول الاجتماعي قريباً",
+    "showPassword": "إظهار كلمة المرور",
+    "hidePassword": "إخفاء كلمة المرور",
     "resetPasswordTitle": "إعادة تعيين كلمة المرور",
     "resetPasswordDescription": "أدخل البريد المرتبط بحسابك وسنرسل لك رابطاً لإعادة تعيين كلمة المرور.",
     "sendResetLink": "إرسال رابط إعادة التعيين",
@@ -129,7 +131,9 @@
     "currency": "ج.م",
     "feeDisplay": "{amount} ج.م",
     "minutes": "{count} دقيقة",
-    "openActions": "فتح قائمة الإجراءات",
+    "tableCaption": "دليل العيادات",
+    "toggleClinicStatus": "تعيين {name} إلى {status}",
+    "openActions": "فتح قائمة إجراءات {name}",
     "viewProfile": "عرض الملف الكامل",
     "editSettings": "تعديل الإعدادات",
     "deleteClinic": "حذف العيادة",
@@ -198,6 +202,10 @@
     "loadingSlots": "جاري تحميل المواعيد المتاحة…",
     "slotsError": "تعذر تحميل المواعيد المتاحة.",
     "noSlots": "لا توجد مواعيد متاحة لهذه العيادة حالياً.",
-    "noSlotsOnDate": "لا توجد مواعيد متاحة في {date}."
+    "noSlotsOnDate": "لا توجد مواعيد متاحة في {date}.",
+    "slotsListLabel": "المواعيد المتاحة",
+    "slotAvailable": "{time}، متاح",
+    "slotUnavailable": "{time}، غير متاح",
+    "loadingClinic": "جاري تحميل تفاصيل العيادة"
   }
 }

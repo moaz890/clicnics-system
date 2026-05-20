@@ -62,7 +62,10 @@ export function ClinicsTable({ onEdit, onDelete }: ClinicsTableProps) {
 
   if (isError) {
     return (
-      <div className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center text-sm text-destructive">
+      <div
+        role="alert"
+        className="rounded-xl border border-destructive/30 bg-destructive/5 p-6 text-center text-sm text-destructive"
+      >
         {t("loadError")}
       </div>
     );
@@ -79,13 +82,22 @@ export function ClinicsTable({ onEdit, onDelete }: ClinicsTableProps) {
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
       <Table>
+        <caption className="sr-only">{t("tableCaption")}</caption>
         <TableHeader>
           <TableRow className="hover:bg-transparent">
-            <TableHead className="text-start">{t("name")}</TableHead>
-            <TableHead className="text-start">{t("phone")}</TableHead>
-            <TableHead className="text-start">{t("examinationFee")}</TableHead>
-            <TableHead className="text-start">{t("status")}</TableHead>
-            <TableHead className="w-12 text-end">
+            <TableHead scope="col" className="text-start">
+              {t("name")}
+            </TableHead>
+            <TableHead scope="col" className="text-start">
+              {t("phone")}
+            </TableHead>
+            <TableHead scope="col" className="text-start">
+              {t("examinationFee")}
+            </TableHead>
+            <TableHead scope="col" className="text-start">
+              {t("status")}
+            </TableHead>
+            <TableHead scope="col" className="w-12 text-end">
               <span className="sr-only">{t("actions")}</span>
             </TableHead>
           </TableRow>
@@ -128,10 +140,10 @@ export function ClinicsTable({ onEdit, onDelete }: ClinicsTableProps) {
               <TableCell className="text-end">
                 <DropdownMenu>
                   <DropdownMenuTrigger
-                    className="inline-flex size-9 cursor-pointer items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-popover-foreground"
-                    aria-label={t("openActions")}
+                    className="inline-flex size-9 cursor-pointer items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-popover-foreground focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
+                    aria-label={t("openActions", { name: clinic.name })}
                   >
-                    <MoreHorizontal className="size-4" />
+                    <MoreHorizontal className="size-4" aria-hidden />
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="min-w-44">
                     <DropdownMenuGroup>

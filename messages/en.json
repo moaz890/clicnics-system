@@ -46,6 +46,8 @@
     "loginError": "Invalid email or password. Please try again.",
     "registerError": "Could not create your account. Please try again.",
     "socialComingSoon": "Social sign-in coming soon",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
     "resetPasswordTitle": "Reset Your Password",
     "resetPasswordDescription": "Enter the email associated with your account and we'll send you a link to reset your password.",
     "sendResetLink": "Send Reset Link",
@@ -129,7 +131,9 @@
     "currency": "EGP",
     "feeDisplay": "{amount} EGP",
     "minutes": "{count} min",
-    "openActions": "Open actions menu",
+    "tableCaption": "Clinics directory",
+    "toggleClinicStatus": "Set {name} to {status}",
+    "openActions": "Open actions menu for {name}",
     "viewProfile": "View Full Profile",
     "editSettings": "Edit Settings",
     "deleteClinic": "Delete Clinic",
@@ -198,6 +202,10 @@
     "loadingSlots": "Loading available slots…",
     "slotsError": "Could not load available slots.",
     "noSlots": "No slots available for this clinic right now.",
-    "noSlotsOnDate": "No slots available on {date}."
+    "noSlotsOnDate": "No slots available on {date}.",
+    "slotsListLabel": "Available time slots",
+    "slotAvailable": "{time}, available",
+    "slotUnavailable": "{time}, unavailable",
+    "loadingClinic": "Loading clinic details"
   }
 }
