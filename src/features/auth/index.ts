@@ -9,5 +9,7 @@ export {
   useRegisterMutation,
 } from "./authApi";
 export { AuthGuard } from "./components/AuthGuard";
+export { useIsAdmin } from "./hooks/useIsAdmin";
+export { useAuthUser } from "./hooks/useAuthUser";
 export { clearCredentials, setCredentials } from "./authSlice";
 export type { AuthState } from "./authSlice";

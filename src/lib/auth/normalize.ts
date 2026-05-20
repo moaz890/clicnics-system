@@ -1,4 +1,5 @@
 import type { AuthUser } from "@/types/auth";
+import { normalizeRole } from "./roles";
 
 type RawAuthPayload = Record<string, unknown>;
 
@@ -62,7 +63,10 @@ function normalizeUser(payload: RawAuthPayload): AuthUser {
         : typeof userRaw.fullName === "string"
           ? userRaw.fullName
           : undefined,
-    role: typeof userRaw.role === "string" ? userRaw.role : undefined,
+    role:
+      typeof userRaw.role === "string"
+        ? normalizeRole(userRaw.role)
+        : undefined,
   };
 }
 

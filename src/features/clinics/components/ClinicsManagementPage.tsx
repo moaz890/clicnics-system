@@ -14,9 +14,11 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ClinicsTable } from "./ClinicsTable";
 import { ClinicFormDialog } from "./ClinicFormDialog";
 import { DeleteClinicDialog } from "./DeleteClinicDialog";
+import { useIsAdmin } from "@/features/auth/hooks/useIsAdmin";
 
 export function ClinicsManagementPage() {
   const t = useTranslations("clinics");
+  const isAdmin = useIsAdmin();
   const reduceMotion = useReducedMotion();
   const { data: clinics = [] } = useGetClinicsQuery();
 
@@ -61,13 +63,15 @@ export function ClinicsManagementPage() {
             {t("pageSubtitle")}
           </p>
         </div>
-        <Button
-          onClick={openCreate}
-          className="cursor-pointer rounded-xl bg-primary text-primary-foreground shadow-sm hover:bg-[var(--design-primary-active)]"
-        >
-          <Plus className="size-4" aria-hidden />
-          {t("addClinic")}
-        </Button>
+        {isAdmin ? (
+          <Button
+            onClick={openCreate}
+            className="cursor-pointer rounded-xl bg-primary text-primary-foreground shadow-sm hover:bg-[var(--design-primary-active)]"
+          >
+            <Plus className="size-4" aria-hidden />
+            {t("addClinic")}
+          </Button>
+        ) : null}
       </motion.header>
 
       <motion.div
@@ -104,26 +108,31 @@ export function ClinicsManagementPage() {
         transition={reduceMotion ? undefined : { delay: 0.1 }}
       >
         <ClinicsTable
+          canManage={isAdmin}
           onEdit={openEdit}
           onDelete={(clinic) => setDeleteTarget(clinic)}
         />
       </motion.div>
 
-      <ClinicFormDialog
-        open={formOpen}
-        onOpenChange={setFormOpen}
-        mode={formMode}
-        clinic={formMode === "edit" ? editClinic : undefined}
-      />
+      {isAdmin ? (
+        <>
+          <ClinicFormDialog
+            open={formOpen}
+            onOpenChange={setFormOpen}
+            mode={formMode}
+            clinic={formMode === "edit" ? editClinic : undefined}
+          />
 
-      <DeleteClinicDialog
-        open={Boolean(deleteTarget)}
-        clinicId={deleteTarget?.id ?? null}
-        clinicName={deleteTarget?.name}
-        onOpenChange={(open) => {
-          if (!open) setDeleteTarget(null);
-        }}
-      />
+          <DeleteClinicDialog
+            open={Boolean(deleteTarget)}
+            clinicId={deleteTarget?.id ?? null}
+            clinicName={deleteTarget?.name}
+            onOpenChange={(open) => {
+              if (!open) setDeleteTarget(null);
+            }}
+          />
+        </>
+      ) : null}
     </div>
   );
 }

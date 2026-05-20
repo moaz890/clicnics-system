@@ -28,13 +28,19 @@ import {
 } from "@/components/ui/table";
 import { Skeleton } from "@/components/ui/skeleton";
 import { cn } from "@/lib/utils";
+import { LtrText } from "@/components/ui/ltr-text";
 
 interface ClinicsTableProps {
+  canManage?: boolean;
   onEdit: (clinicId: string) => void;
   onDelete: (clinic: ClinicListItem) => void;
 }
 
-export function ClinicsTable({ onEdit, onDelete }: ClinicsTableProps) {
+export function ClinicsTable({
+  canManage = false,
+  onEdit,
+  onDelete,
+}: ClinicsTableProps) {
   const t = useTranslations("clinics");
   const { data: clinics = [], isLoading, isError } = useGetClinicsQuery();
   const [updateClinic] = useUpdateClinicMutation();
@@ -116,67 +122,73 @@ export function ClinicsTable({ onEdit, onDelete }: ClinicsTableProps) {
                   {clinic.name}
                 </Link>
               </TableCell>
-              <TableCell className="text-muted-foreground" dir="ltr">
-                {clinic.phone}
+              <TableCell className="min-w-0 text-start text-muted-foreground">
+                <LtrText>{clinic.phone}</LtrText>
               </TableCell>
               <TableCell>
                 {t("feeDisplay", { amount: clinic.examinationFee })}
               </TableCell>
               <TableCell>
                 <div className="flex items-center gap-3">
-                  <Switch
-                    checked={clinic.isActive}
-                    onCheckedChange={(checked) =>
-                      handleToggleActive(clinic, checked)
-                    }
-                    className="cursor-pointer data-checked:bg-[var(--design-accent-teal)]"
-                    aria-label={
-                      clinic.isActive ? t("statusActive") : t("statusInactive")
-                    }
-                  />
+                  {canManage ? (
+                    <Switch
+                      checked={clinic.isActive}
+                      onCheckedChange={(checked) =>
+                        handleToggleActive(clinic, checked)
+                      }
+                      aria-label={t("toggleClinicStatus", {
+                        name: clinic.name,
+                        status: clinic.isActive
+                          ? t("statusActive")
+                          : t("statusInactive"),
+                      })}
+                    />
+                  ) : null}
                   <ClinicStatusBadge isActive={clinic.isActive} />
                 </div>
               </TableCell>
-              <TableCell className="text-end">
-                <DropdownMenu>
-                  <DropdownMenuTrigger
-                    className="inline-flex size-9 cursor-pointer items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-popover-foreground focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
-                    aria-label={t("openActions", { name: clinic.name })}
-                  >
-                    <MoreHorizontal className="size-4" aria-hidden />
-                  </DropdownMenuTrigger>
-                  <DropdownMenuContent align="end" className="min-w-44">
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        render={
-                          <Link
-                            href={`/dashboard/clinics/${clinic.id}`}
-                            className="cursor-pointer"
-                          />
-                        }
-                      >
-                        {t("viewProfile")}
-                      </DropdownMenuItem>
-                      <DropdownMenuItem
-                        className="cursor-pointer"
-                        onClick={() => onEdit(clinic.id)}
-                      >
-                        {t("editSettings")}
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                    <DropdownMenuSeparator />
-                    <DropdownMenuGroup>
-                      <DropdownMenuItem
-                        variant="destructive"
-                        className="cursor-pointer"
-                        onClick={() => onDelete(clinic)}
-                      >
-                        {t("deleteClinic")}
-                      </DropdownMenuItem>
-                    </DropdownMenuGroup>
-                  </DropdownMenuContent>
-                </DropdownMenu>
-              </TableCell>
+              {canManage ? (
+                <TableCell className="text-end">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger
+                      className="inline-flex size-9 cursor-pointer items-center justify-center rounded-lg text-muted-foreground transition-colors hover:bg-muted hover:text-popover-foreground focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none"
+                      aria-label={t("openActions", { name: clinic.name })}
+                    >
+                      <MoreHorizontal className="size-4" aria-hidden />
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end" className="min-w-44">
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          render={
+                            <Link
+                              href={`/dashboard/clinics/${clinic.id}`}
+                              className="cursor-pointer"
+                            />
+                          }
+                        >
+                          {t("viewProfile")}
+                        </DropdownMenuItem>
+                        <DropdownMenuItem
+                          className="cursor-pointer"
+                          onClick={() => onEdit(clinic.id)}
+                        >
+                          {t("editSettings")}
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                      <DropdownMenuSeparator />
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem
+                          variant="destructive"
+                          className="cursor-pointer"
+                          onClick={() => onDelete(clinic)}
+                        >
+                          {t("deleteClinic")}
+                        </DropdownMenuItem>
+                      </DropdownMenuGroup>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </TableCell>
+              ) : null}
             </TableRow>
           ))}
         </TableBody>

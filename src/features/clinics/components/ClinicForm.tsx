@@ -374,7 +374,7 @@ export function ClinicForm({ mode, clinic, onSuccess }: ClinicFormProps) {
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="cursor-pointer data-checked:bg-[var(--design-accent-teal)]"
+                  className="cursor-pointer"
                 />
               </FormControl>
             </FormItem>

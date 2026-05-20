@@ -8,8 +8,9 @@ import {
 } from "@/lib/auth/cookies";
 import { redirectToLogin } from "@/lib/auth/redirect";
 import { isAccessTokenValid } from "@/lib/auth/token";
-import { useAppDispatch } from "@/store/hooks";
-import { clearCredentials } from "@/features/auth/authSlice";
+import { getSessionAuthFromToken } from "@/lib/auth/session";
+import { useAppDispatch, useAppSelector } from "@/store/hooks";
+import { clearCredentials, setCredentials } from "@/features/auth/authSlice";
 import { Spinner } from "@/components/ui/spinner";
 
 interface AuthGuardProps {
@@ -23,6 +24,7 @@ interface AuthGuardProps {
 export function AuthGuard({ children }: AuthGuardProps) {
   const dispatch = useAppDispatch();
   const pathname = usePathname();
+  const storedUser = useAppSelector((state) => state.auth.user);
   const [allowed, setAllowed] = useState(false);
 
   useEffect(() => {
@@ -42,8 +44,22 @@ export function AuthGuard({ children }: AuthGuardProps) {
       return;
     }
 
+    const session = getSessionAuthFromToken();
+    if (session && (!storedUser?.id || (!storedUser.role && session.role))) {
+      dispatch(
+        setCredentials({
+          user: {
+            id: storedUser?.id ?? session.id,
+            email: storedUser?.email,
+            name: storedUser?.name,
+            role: storedUser?.role ?? session.role,
+          },
+        }),
+      );
+    }
+
     setAllowed(true);
-  }, [dispatch, pathname]);
+  }, [dispatch, pathname, storedUser?.id, storedUser?.role, storedUser?.email, storedUser?.name]);
 
   if (!allowed) {
     return (

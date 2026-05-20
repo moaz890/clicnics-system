@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import type { Clinic } from "../types/clinic";
 import { ClinicStatusBadge } from "./ClinicStatusBadge";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { LtrText } from "@/components/ui/ltr-text";
 
 export function ClinicOverviewTab({ clinic }: { clinic: Clinic }) {
   const t = useTranslations("clinics");
@@ -11,7 +12,7 @@ export function ClinicOverviewTab({ clinic }: { clinic: Clinic }) {
   const items = [
     { label: t("name"), value: clinic.name },
     { label: t("address"), value: clinic.address },
-    { label: t("phone"), value: clinic.phone, dir: "ltr" as const },
+    { label: t("phone"), value: clinic.phone, ltr: true },
     {
       label: t("examinationFee"),
       value: t("feeDisplay", { amount: clinic.examinationFee }),
@@ -23,7 +24,7 @@ export function ClinicOverviewTab({ clinic }: { clinic: Clinic }) {
     {
       label: t("coordinates"),
       value: `${clinic.location.lat}, ${clinic.location.lng}`,
-      dir: "ltr" as const,
+      ltr: true,
     },
   ];
 
@@ -38,15 +39,16 @@ export function ClinicOverviewTab({ clinic }: { clinic: Clinic }) {
         </CardHeader>
         <CardContent className="grid gap-4 sm:grid-cols-2">
           {items.map((item) => (
-            <div key={item.label} className="space-y-1 text-start">
+            <div key={item.label} className="min-w-0 space-y-1 text-start">
               <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 {item.label}
               </p>
-              <p
-                className="text-sm font-medium text-popover-foreground"
-                dir={item.dir}
-              >
-                {item.value}
+              <p className="text-sm font-medium text-popover-foreground">
+                {item.ltr ? (
+                  <LtrText>{item.value}</LtrText>
+                ) : (
+                  item.value
+                )}
               </p>
             </div>
           ))}

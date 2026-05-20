@@ -18,6 +18,7 @@ import { ClinicScheduleTab } from "./ClinicScheduleTab";
 import { ClinicSlotsTab } from "./ClinicSlotsTab";
 import { ClinicFormDialog } from "./ClinicFormDialog";
 import { ClinicStatusBadge } from "./ClinicStatusBadge";
+import { useIsAdmin } from "@/features/auth/hooks/useIsAdmin";
 
 interface ClinicDetailViewProps {
   clinicId: string;
@@ -25,6 +26,7 @@ interface ClinicDetailViewProps {
 
 export function ClinicDetailView({ clinicId }: ClinicDetailViewProps) {
   const t = useTranslations("clinics");
+  const isAdmin = useIsAdmin();
   const { data: clinic, isLoading, isError } = useGetClinicByIdQuery(clinicId);
   const [editOpen, setEditOpen] = useState(false);
 
@@ -80,14 +82,16 @@ export function ClinicDetailView({ clinicId }: ClinicDetailViewProps) {
             {clinic.address}
           </p>
         </div>
-        <Button
-          variant="outline"
-          onClick={() => setEditOpen(true)}
-          className="cursor-pointer rounded-xl"
-        >
-          <Pencil className="size-4" aria-hidden />
-          {t("editSettings")}
-        </Button>
+        {isAdmin ? (
+          <Button
+            variant="outline"
+            onClick={() => setEditOpen(true)}
+            className="cursor-pointer rounded-xl"
+          >
+            <Pencil className="size-4" aria-hidden />
+            {t("editSettings")}
+          </Button>
+        ) : null}
       </div>
 
       <Tabs defaultValue="overview" className="gap-6">
@@ -118,12 +122,14 @@ export function ClinicDetailView({ clinicId }: ClinicDetailViewProps) {
         </TabsContent>
       </Tabs>
 
-      <ClinicFormDialog
-        open={editOpen}
-        onOpenChange={setEditOpen}
-        mode="edit"
-        clinic={clinic}
-      />
+      {isAdmin ? (
+        <ClinicFormDialog
+          open={editOpen}
+          onOpenChange={setEditOpen}
+          mode="edit"
+          clinic={clinic}
+        />
+      ) : null}
     </div>
   );
 }

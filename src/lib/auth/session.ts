@@ -1,5 +1,7 @@
 import { jwtDecode } from "jwt-decode";
+import type { AuthUser } from "@/types/auth";
 import { AUTH_COOKIE_NAMES, getAccessToken } from "./cookies";
+import { normalizeRole } from "./roles";
 import { isAccessTokenValid } from "./token";
 
 interface AccessTokenIdentity {
@@ -7,6 +9,12 @@ interface AccessTokenIdentity {
   userId?: string;
   sub?: string;
   _id?: string;
+  role?: string;
+}
+
+function readUserIdFromClaims(claims: AccessTokenIdentity): string {
+  const id = claims.id ?? claims.userId ?? claims._id ?? claims.sub;
+  return typeof id === "string" ? id : id != null ? String(id) : "";
 }
 
 export function getAccessTokenFromRequest(
@@ -33,10 +41,29 @@ export function getSessionUserId(reduxUserId?: string | null): string {
   }
 
   try {
-    const claims = jwtDecode<AccessTokenIdentity>(token);
-    const id = claims.id ?? claims.userId ?? claims._id ?? claims.sub;
-    return typeof id === "string" ? id : id != null ? String(id) : "";
+    return readUserIdFromClaims(jwtDecode<AccessTokenIdentity>(token));
   } catch {
     return "";
+  }
+}
+
+/** User id + role from JWT (survives page reload when Redux is empty). */
+export function getSessionAuthFromToken(): Pick<AuthUser, "id" | "role"> | null {
+  const token = getAccessToken();
+  if (!token) {
+    return null;
+  }
+
+  try {
+    const claims = jwtDecode<AccessTokenIdentity>(token);
+    const id = readUserIdFromClaims(claims);
+    if (!id) {
+      return null;
+    }
+
+    const role = normalizeRole(claims.role);
+    return { id, ...(role ? { role } : {}) };
+  } catch {
+    return null;
   }
 }
