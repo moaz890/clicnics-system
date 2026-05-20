@@ -12,6 +12,10 @@ const AUTH_ERROR_KEYS = new Set([
   "passwordNumber",
   "confirmPasswordRequired",
   "passwordMismatch",
+  "termsRequired",
+  "otpLength",
+  "otpInvalid",
+  "newPasswordSameAsCurrent",
 ]);
 
 export function resolveAuthFieldError(

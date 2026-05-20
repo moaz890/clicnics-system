@@ -1,16 +1,22 @@
 import { baseApi } from "@/store/baseApi";
 import {
   clearAuthCookies,
+  getRefreshToken,
   setAuthCookies,
 } from "@/lib/auth/cookies";
 import type {
   AuthUser,
+  ForgotPasswordRequest,
+  VerifyResetCodeRequest,
+  ResetPasswordRequest,
+  ChangePasswordRequest,
   LoginRequest,
   LoginResponse,
   RefreshTokenResponse,
   RegisterRequest,
   RegisterResponse,
 } from "@/types/auth";
+import { normalizeLoginResponse, normalizeRefreshResponse } from "@/lib/auth/normalize";
 import { clearCredentials, setCredentials } from "./authSlice";
 
 export const authApi = baseApi.injectEndpoints({
@@ -21,16 +27,12 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         body,
       }),
+      transformResponse: (raw: unknown) => normalizeLoginResponse(raw),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          setAuthCookies(data.accessToken, data.refreshToken);
-          dispatch(setCredentials({ user: data.user }));
-        } catch {
-          /* handled by RTK Query */
-        }
+        const { data } = await queryFulfilled;
+        setAuthCookies(data.accessToken, data.refreshToken);
+        dispatch(setCredentials({ user: data.user }));
       },
-      invalidatesTags: ["Auth"],
     }),
 
     login: builder.mutation<LoginResponse, LoginRequest>({
@@ -39,23 +41,21 @@ export const authApi = baseApi.injectEndpoints({
         method: "POST",
         body,
       }),
+      transformResponse: (raw: unknown) => normalizeLoginResponse(raw),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          setAuthCookies(data.accessToken, data.refreshToken);
-          dispatch(setCredentials({ user: data.user }));
-        } catch {
-          /* handled by RTK Query */
-        }
+        const { data } = await queryFulfilled;
+        setAuthCookies(data.accessToken, data.refreshToken);
+        dispatch(setCredentials({ user: data.user }));
       },
-      invalidatesTags: ["Auth"],
     }),
 
     refreshToken: builder.mutation<RefreshTokenResponse, void>({
       query: () => ({
         url: "/auth/refresh",
         method: "POST",
+        body: { refreshToken: getRefreshToken() },
       }),
+      transformResponse: (raw: unknown) => normalizeRefreshResponse(raw),
       async onQueryStarted(_arg, { queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;
@@ -66,18 +66,44 @@ export const authApi = baseApi.injectEndpoints({
       },
     }),
 
-    logout: builder.mutation<void, void>({
-      query: () => ({
-        url: "/auth/logout",
+    forgotPassword: builder.mutation<void, ForgotPasswordRequest>({
+      query: (body) => ({
+        url: "/auth/forget-password",
         method: "POST",
+        body,
       }),
-      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          await queryFulfilled;
-        } finally {
-          clearAuthCookies();
-          dispatch(clearCredentials());
-        }
+    }),
+
+    verifyResetCode: builder.mutation<void, VerifyResetCodeRequest>({
+      query: (body) => ({
+        url: "/auth/verify-reset-code",
+        method: "POST",
+        body,
+      }),
+    }),
+
+    resetPassword: builder.mutation<void, ResetPasswordRequest>({
+      query: (body) => ({
+        url: "/auth/reset-password",
+        method: "PATCH",
+        body,
+      }),
+    }),
+
+    changePassword: builder.mutation<void, ChangePasswordRequest>({
+      query: (body) => ({
+        url: "/auth/changePassword",
+        method: "PATCH",
+        body,
+      }),
+    }),
+
+    logout: builder.mutation<void, void>({
+      // Backend has no /auth/logout — clear local session only.
+      queryFn: async (_arg, { dispatch }) => {
+        clearAuthCookies();
+        dispatch(clearCredentials());
+        return { data: undefined };
       },
       invalidatesTags: ["Auth"],
     }),
@@ -100,6 +126,10 @@ export const authApi = baseApi.injectEndpoints({
 export const {
   useRegisterMutation,
   useLoginMutation,
+  useForgotPasswordMutation,
+  useVerifyResetCodeMutation,
+  useResetPasswordMutation,
+  useChangePasswordMutation,
   useLogoutMutation,
   useRefreshTokenMutation,
   useGetMeQuery,

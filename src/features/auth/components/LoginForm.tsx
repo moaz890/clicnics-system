@@ -9,10 +9,22 @@ import { Link, useRouter } from "@/i18n/navigation";
 import { useLoginMutation } from "@/features/auth/authApi";
 import { resolveAuthFieldError } from "@/features/auth/lib/field-error";
 import {
+  staggerContainer,
+  staggerItem,
+} from "@/features/auth/lib/auth-motion";
+import {
   loginSchema,
   type LoginFormValues,
 } from "@/features/auth/schemas/loginSchema";
-import { AuthField } from "./AuthField";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
+import { AuthFormInput } from "./AuthFormInput";
 import { AuthSubmitButton } from "./AuthSubmitButton";
 import { AuthTitle } from "./AuthTitle";
 import { SocialAuthButtons } from "./SocialAuthButtons";
@@ -29,11 +41,7 @@ export function LoginForm() {
   const searchParams = useSearchParams();
   const [login, { isLoading, isError }] = useLoginMutation();
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<LoginFormValues>({
+  const form = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     defaultValues: { email: "", password: "" },
   });
@@ -41,7 +49,9 @@ export function LoginForm() {
   const onSubmit = async (values: LoginFormValues) => {
     try {
       await login(values).unwrap();
-      router.push(resolveCallbackPath(searchParams.get("callbackUrl")));
+      const destination = resolveCallbackPath(searchParams.get("callbackUrl"));
+      router.replace(destination);
+      router.refresh();
     } catch {
       /* isError handles UI */
     }
@@ -49,65 +59,103 @@ export function LoginForm() {
 
   return (
     <>
-      <AuthTitle subtitle={t("loginSubtitle")}>{t("welcomeBack")}</AuthTitle>
+      <AuthTitle>{t("welcomeBack")}</AuthTitle>
 
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4" noValidate>
-        <AuthField
-          {...register("email")}
-          name="email"
-          type="email"
-          autoComplete="email"
-          icon="email"
-          label={t("email")}
-          error={resolveAuthFieldError(t, errors.email?.message)}
-          animationDelay={0.08}
-        />
+      <Form {...form}>
+        <motion.form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-4"
+          noValidate
+          variants={staggerContainer}
+          initial="hidden"
+          animate="show"
+        >
+          <motion.div variants={staggerItem}>
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>{t("emailAddress")}</FormLabel>
+                  <FormControl>
+                    <AuthFormInput
+                      {...field}
+                      type="email"
+                      autoComplete="email"
+                      icon="email"
+                      placeholder={t("emailAddress")}
+                    />
+                  </FormControl>
+                  <FormMessage>
+                    {resolveAuthFieldError(
+                      t,
+                      form.formState.errors.email?.message,
+                    )}
+                  </FormMessage>
+                </FormItem>
+              )}
+            />
+          </motion.div>
 
-        <div className="space-y-1.5">
-          <AuthField
-            {...register("password")}
-            name="password"
-            type="password"
-            autoComplete="current-password"
-            icon="password"
-            label={t("password")}
-            error={resolveAuthFieldError(t, errors.password?.message)}
-            animationDelay={0.14}
-          />
-          <div className="flex justify-end">
-            <Link
-              href="/forgot-password"
-              className="text-sm text-[var(--design-primary)] transition-colors hover:text-[var(--design-primary-active)] hover:underline"
+          <motion.div variants={staggerItem} className="space-y-1.5">
+            <FormField
+              control={form.control}
+              name="password"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="sr-only">{t("password")}</FormLabel>
+                  <FormControl>
+                    <AuthFormInput
+                      {...field}
+                      type="password"
+                      autoComplete="current-password"
+                      icon="password"
+                      placeholder={t("password")}
+                    />
+                  </FormControl>
+                  <FormMessage>
+                    {resolveAuthFieldError(
+                      t,
+                      form.formState.errors.password?.message,
+                    )}
+                  </FormMessage>
+                </FormItem>
+              )}
+            />
+            <div className="flex justify-end">
+              <Link
+                href="/forgot-password"
+                className="cursor-pointer text-sm text-primary transition-colors hover:text-teal-800 hover:underline"
+              >
+                {t("forgotPassword")}
+              </Link>
+            </div>
+          </motion.div>
+
+          {isError && (
+            <motion.p
+              role="alert"
+              variants={staggerItem}
+              className="rounded-xl bg-destructive/10 px-3 py-2 text-sm text-destructive"
             >
-              {t("forgotPassword")}
-            </Link>
-          </div>
-        </div>
+              {t("loginError")}
+            </motion.p>
+          )}
 
-        {isError && (
-          <motion.p
-            role="alert"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            className="rounded-[var(--design-radius-md)] bg-[color-mix(in_srgb,var(--design-error)_12%,transparent)] px-3 py-2 text-sm text-[var(--design-error)]"
-          >
-            {t("loginError")}
-          </motion.p>
-        )}
-
-        <AuthSubmitButton loading={isLoading}>{t("logIn")}</AuthSubmitButton>
-      </form>
+          <AuthSubmitButton loading={isLoading}>{t("signIn")}</AuthSubmitButton>
+        </motion.form>
+      </Form>
 
       <motion.p
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        initial={{ opacity: 0, y: 15 }}
+        animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.35 }}
-        className="mt-6 text-center text-sm text-[var(--design-body)]"
+        className="mt-6 text-center text-sm text-muted-foreground"
       >
         {t("noAccount")}{" "}
         <Link
           href="/register"
-          className="font-medium text-[var(--design-primary)] transition-colors hover:text-[var(--design-primary-active)] hover:underline"
+          className="cursor-pointer font-semibold text-primary transition-colors hover:text-teal-800 hover:underline"
         >
           {t("signUp")}
         </Link>

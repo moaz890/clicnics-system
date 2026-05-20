@@ -1,14 +1,16 @@
-// Tenant slug: hostname split (e.g. dr-tarek.platform.com → dr-tarek)
 import createIntlMiddleware from "next-intl/middleware";
 import { type NextRequest, NextResponse } from "next/server";
 import { AUTH_COOKIE_NAMES } from "@/lib/auth/cookies";
+import {
+  isGuestOnlyPath,
+  isProtectedPath,
+} from "@/lib/auth/routes";
+import { isRequestAuthenticated } from "@/lib/auth/session";
 import { TENANT_HEADER } from "@/lib/tenant/constants";
 import { getTenantSlugFromHostname } from "@/lib/tenant/extract";
 import { routing, type AppLocale } from "@/i18n/routing";
 
 const intlMiddleware = createIntlMiddleware(routing);
-
-const DASHBOARD_PATH = "/dashboard";
 
 function parsePathname(pathname: string): {
   locale: AppLocale | null;
@@ -29,11 +31,22 @@ function parsePathname(pathname: string): {
   return { locale: null, pathWithoutLocale: pathname };
 }
 
-function isDashboardRoute(pathWithoutLocale: string): boolean {
-  return (
-    pathWithoutLocale === DASHBOARD_PATH ||
-    pathWithoutLocale.startsWith(`${DASHBOARD_PATH}/`)
-  );
+function clearAuthCookies(response: NextResponse): void {
+  response.cookies.delete(AUTH_COOKIE_NAMES.accessToken);
+  response.cookies.delete(AUTH_COOKIE_NAMES.refreshToken);
+}
+
+function redirectToLogin(
+  request: NextRequest,
+  locale: AppLocale,
+  callbackPath: string,
+): NextResponse {
+  const loginUrl = request.nextUrl.clone();
+  loginUrl.pathname = `/${locale}/login`;
+  loginUrl.searchParams.set("callbackUrl", callbackPath);
+  const response = NextResponse.redirect(loginUrl);
+  clearAuthCookies(response);
+  return response;
 }
 
 export default function middleware(request: NextRequest) {
@@ -43,13 +56,20 @@ export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const { locale, pathWithoutLocale } = parsePathname(pathname);
-  const accessToken = request.cookies.get(AUTH_COOKIE_NAMES.accessToken)?.value;
+  const getCookie = (name: string) => request.cookies.get(name);
+  const isAuthenticated = isRequestAuthenticated(getCookie);
 
-  if (locale && isDashboardRoute(pathWithoutLocale) && !accessToken) {
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = `/${locale}/login`;
-    loginUrl.searchParams.set("callbackUrl", pathname);
-    return NextResponse.redirect(loginUrl);
+  if (locale) {
+    if (isProtectedPath(pathWithoutLocale) && !isAuthenticated) {
+      return redirectToLogin(request, locale, pathname);
+    }
+
+    if (isGuestOnlyPath(pathWithoutLocale) && isAuthenticated) {
+      const dashboardUrl = request.nextUrl.clone();
+      dashboardUrl.pathname = `/${locale}/dashboard`;
+      dashboardUrl.search = "";
+      return NextResponse.redirect(dashboardUrl);
+    }
   }
 
   const response = intlMiddleware(request);

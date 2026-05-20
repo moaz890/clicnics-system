@@ -8,19 +8,26 @@ import {
 import {
   clearAuthCookies,
   getAccessToken,
+  getRefreshToken,
   setAuthCookies,
 } from "@/lib/auth/cookies";
+import { normalizeRefreshResponse } from "@/lib/auth/normalize";
+import { redirectToLogin } from "@/lib/auth/redirect";
+import { isAccessTokenValid } from "@/lib/auth/token";
 import { applyTenantHeader } from "@/lib/tenant/extract";
+import { clearCredentials } from "@/features/auth/authSlice";
 import type { RefreshTokenResponse } from "@/types/auth";
+import type { AppDispatch } from "./store";
 
 const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://52.3.221.28:5050/api";
 
 const rawBaseQuery = fetchBaseQuery({
   baseUrl,
-  credentials: "include",
+  // Auth: Bearer token from js-cookie (not cross-origin httpOnly cookies).
+  // Keeps CORS simple — backend does not need credentials: true for API calls.
   prepareHeaders: (headers) => {
     const accessToken = getAccessToken();
-    if (accessToken) {
+    if (accessToken && isAccessTokenValid(accessToken)) {
       headers.set("Authorization", `Bearer ${accessToken}`);
     }
 
@@ -47,25 +54,39 @@ const baseQueryWithReauth: BaseQueryFn<
   }
 
   const requestUrl = typeof args === "string" ? args : args.url;
-  if (requestUrl.includes("/auth/refresh") || requestUrl.includes("/auth/login")) {
+  if (
+    requestUrl.includes("/auth/refresh") ||
+    requestUrl.includes("/auth/login") ||
+    requestUrl.includes("/auth/register") ||
+    requestUrl.includes("/auth/forget-password") ||
+    requestUrl.includes("/auth/verify-reset-code") ||
+    requestUrl.includes("/auth/reset-password")
+  ) {
     return result;
   }
 
   if (!refreshPromise) {
     refreshPromise = (async () => {
+      const refreshToken = getRefreshToken();
       const refreshResult = await rawBaseQuery(
-        { url: "/auth/refresh", method: "POST" },
+        {
+          url: "/auth/refresh",
+          method: "POST",
+          body: refreshToken ? { refreshToken } : undefined,
+        },
         api,
         extraOptions,
       );
 
       if (refreshResult.data) {
-        const tokens = refreshResult.data as RefreshTokenResponse;
+        const tokens = normalizeRefreshResponse(refreshResult.data);
         setAuthCookies(tokens.accessToken, tokens.refreshToken);
         return tokens;
       }
 
       clearAuthCookies();
+      (api.dispatch as AppDispatch)(clearCredentials());
+      redirectToLogin();
       return null;
     })().finally(() => {
       refreshPromise = null;
@@ -76,6 +97,10 @@ const baseQueryWithReauth: BaseQueryFn<
 
   if (refreshed) {
     result = await rawBaseQuery(args, api, extraOptions);
+  } else if (result.error?.status === 401) {
+    clearAuthCookies();
+    (api.dispatch as AppDispatch)(clearCredentials());
+    redirectToLogin();
   }
 
   return result;

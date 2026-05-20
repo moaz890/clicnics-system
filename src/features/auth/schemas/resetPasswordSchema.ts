@@ -1,25 +1,21 @@
 import { z } from "zod";
 
-export const registerSchema = z
+export const resetPasswordSchema = z
   .object({
-    name: z.string().min(2, "nameMin"),
     email: z
       .string()
       .min(1, "emailRequired")
       .email("emailInvalid"),
-    password: z
+    newPassword: z
       .string()
       .min(8, "passwordMin")
       .regex(/[A-Z]/, "passwordUppercase")
       .regex(/[0-9]/, "passwordNumber"),
     confirmPassword: z.string().min(1, "confirmPasswordRequired"),
-    acceptTerms: z.boolean().refine((val) => val === true, {
-      message: "termsRequired",
-    }),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.newPassword === data.confirmPassword, {
     message: "passwordMismatch",
     path: ["confirmPassword"],
   });
 
-export type RegisterFormValues = z.infer<typeof registerSchema>;
+export type ResetPasswordFormValues = z.infer<typeof resetPasswordSchema>;

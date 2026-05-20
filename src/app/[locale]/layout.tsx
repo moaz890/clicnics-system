@@ -7,6 +7,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Noto_Sans_Arabic } from "next/font/google";
 import { routing } from "@/i18n/routing";
 import { StoreProvider } from "@/store/StoreProvider";
+import { ThemeProvider } from "@/components/providers/ThemeProvider";
 import { Toaster } from "@/components/ui/sonner";
 import { cn } from "@/lib/utils";
 import "../globals.css";
@@ -70,10 +71,12 @@ export default async function LocaleLayout({
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         <NextIntlClientProvider messages={messages}>
-          <StoreProvider>
-            {children}
-            <Toaster richColors position="top-center" />
-          </StoreProvider>
+          <ThemeProvider>
+            <StoreProvider>
+              {children}
+              <Toaster richColors position="top-center" />
+            </StoreProvider>
+          </ThemeProvider>
         </NextIntlClientProvider>
       </body>
     </html>
