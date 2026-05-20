@@ -1,0 +1,102 @@
+---
+description: Project directory structure, key folders, and important entrypoint files
+globs:
+alwaysApply: true
+---
+# Directory structure and important files
+
+This repository contains two main applications:
+
+- **Backend (API)**: `savvy_ai_back/` (NestJS / Node)
+- **Frontend (Web)**: `savvy_ai_web/` (Vite / React / TypeScript)
+
+## Top-level layout (repo root)
+
+```
+.cursor/rules/              Cursor rules for this repo (always put rules here)
+savvy_ai_back/              Backend service (NestJS)
+savvy_ai_web/               Frontend web app (Vite/React)
+```
+
+## Backend (`savvy_ai_back/`)
+
+### Key files
+
+- `savvy_ai_back/package.json`: backend dependencies and scripts
+- `savvy_ai_back/docker-compose.yml`: local/dev infra (DB/services) for backend
+- `savvy_ai_back/ecosystem.config.js`: process manager config (PM2)
+- `savvy_ai_back/nest-cli.json`: NestJS CLI/project config
+- `savvy_ai_back/tsconfig.json`: TS config for backend
+- `savvy_ai_back/.env` and `savvy_ai_back/.env.example`: backend configuration (never commit secrets)
+- `savvy_ai_back/index.js`: backend runtime entry (wrapper around compiled output)
+
+### Source code
+
+- `savvy_ai_back/src/main.ts`: NestJS bootstrap / app startup
+- `savvy_ai_back/src/app.module.ts`: root module wiring
+- `savvy_ai_back/src/app.controller.ts`, `savvy_ai_back/src/app.service.ts`: base app surface
+
+### Backend modules (common entry points)
+
+Most features live under `savvy_ai_back/src/`:
+
+- `src/auth/`: authentication, JWT strategy, login/register/password flows
+- `src/users/`: user domain, user management
+- `src/admin/`: admin endpoints and admin services
+- `src/analytics/`: analytics endpoints/services
+- `src/categories/`, `src/chat/`, `src/notifications/`, `src/payments/`, `src/subscription/`, `src/stripe/`: feature modules
+- `src/common/`: shared helpers (guards, interceptors, utils, shared services)
+- `src/entities/`: DB entities/models
+- `src/migrations/`: database migrations
+- `src/i18n/`: localization
+- `src/logger/`: logging
+- `src/generated/`: generated code (avoid hand-editing unless you know the generator)
+- `src/tasks/`: background tasks/schedulers
+- `src/typeorm.config.ts`: TypeORM configuration
+
+### Build output and non-source folders
+
+- `savvy_ai_back/dist/`: compiled backend output (generated; prefer editing `src/`)
+- `savvy_ai_back/uploads/`: runtime uploads/static content (treat as data)
+- `savvy_ai_back/node_modules/`: dependencies (never edit)
+- `savvy_ai_back/agent-helper/`: internal notes/assets related to AI/analytics work
+
+## Frontend (`savvy_ai_web/`)
+
+### Key files
+
+- `savvy_ai_web/package.json`: frontend dependencies and scripts
+- `savvy_ai_web/vite.config.ts`: Vite build/dev config
+- `savvy_ai_web/index.html`: HTML entry
+- `savvy_ai_web/tsconfig*.json`: TypeScript configs
+- `savvy_ai_web/eslint.config.js`, `.prettierrc.json`: lint/format
+- `savvy_ai_web/.env` and `.env.example`: frontend configuration (never commit secrets)
+
+### Source code
+
+Frontend code lives in `savvy_ai_web/src/`:
+
+- `src/app/`: app bootstrap/wiring (routing/providers)
+- `src/components/`: shared UI components
+- `src/features/`: feature-oriented slices (preferred place for domain UI + logic)
+- `src/hooks/`: React hooks
+- `src/lib/`: shared utilities, API client helpers, constants
+- `src/stores/`: state management
+- `src/styles/`: global styles/theme
+- `src/assets/`: images/fonts/static assets
+- `src/types/`: shared TypeScript types
+
+### Non-source folders
+
+- `savvy_ai_web/node_modules/`: dependencies (never edit)
+- `savvy_ai_web/agent-helper/`: internal notes/assets
+
+## Conventions for changes
+
+1. Prefer editing **source** folders:
+   - Backend: `savvy_ai_back/src/` (not `dist/`)
+   - Frontend: `savvy_ai_web/src/`
+2. Don’t commit secrets from `.env`. Use `.env.example` for documented defaults.
+3. If you’re unsure where a change belongs:
+   - Backend “feature”: start in `savvy_ai_back/src/<feature>/`
+   - Frontend “feature”: start in `savvy_ai_web/src/features/<feature>/`

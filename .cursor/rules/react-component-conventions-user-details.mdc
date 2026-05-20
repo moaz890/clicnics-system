@@ -1,0 +1,140 @@
+---
+description: Conventions used by the UserDetails admin React component (patterns to follow across similar pages)
+globs: savvy_ai_web/src/features/admin/components/**/*.tsx
+alwaysApply: false
+---
+# React component conventions (from `UserDetails.tsx`)
+
+Use these conventions when building **admin feature components** similar to
+[`UserDetails.tsx`](mdc:savvy_ai_web/src/features/admin/components/UserDetails.tsx).
+
+## Imports and module boundaries
+
+- **React imports**: import `React` plus the hooks used (`useEffect`, `useState`, `useMemo`) from `react`.
+- **Router**: use `react-router-dom` hooks (`useParams`, `useNavigate`) for URL params + navigation.
+- **i18n**: use `useTranslation()` and call `t('...')` for user-facing strings (including errors/labels).
+- **UI libraries**:
+  - **MUI components** for structure and inputs (`Card`, `CardContent`, `Button`, `TextField`, `Avatar`, `Chip`, `IconButton`).
+  - **Icons** from `lucide-react` and `@iconify/react`.
+  - **Tailwind utility classes** for layout, spacing, and colors (often alongside MUI via `className`).
+- **API layer**: call methods on a dedicated API client module (here `authApi`).
+- **Types**: import DTO/types from `src/types/...` and use them in state and API response typing.
+- **Shared UI / utilities**: import shared components (e.g. `UserRoleBadge`) and shared helpers (e.g. `handleApiSuccess`, `handleApiError`).
+- **Path aliasing**: prefer `@/` imports for cross-feature utilities (`@/features/.../utils/...`).
+
+## Component shape
+
+- **Export**: named export `export const UserDetails: React.FC = () => { ... }`
+- **Top section**: hooks first (params, navigation, translation).
+- **State**: declare all `useState` hooks near the top, typed explicitly.
+- **Derived data**: use `useMemo` for computed/grouped data, with defensive empty returns.
+- **Side effects**: `useEffect` triggers data fetch when a route param changes.
+- **Early returns**: render `loading` and `error/not found` states before the main layout.
+- **Main render**: compose a page using `Card` sections and Tailwind grid/layout utilities.
+
+## State conventions (typing + initialization)
+
+- **Nullable fetched objects**: use `T | null` and initialize to `null`.
+- **Arrays**: initialize to `[]`.
+- **Booleans**: initialize to `true/false` as appropriate.
+- **Form state**: keep form values and form errors in separate state objects:
+  - `Record<string, string>` for keyed form values (e.g., `powerBILinks`)
+  - `Record<string, string>` for field errors (e.g., `powerBIFormErrors`)
+- **UI flags**: keep separate booleans for `isEditing...`, `isSaving...`, `hasUnsavedChanges`, and transient UI feedback (e.g., `emailCopied`).
+
+## Data fetching pattern
+
+- Define an inner async function (e.g. `fetchUserDetails`) that:
+  - sets `loading` true and resets `error` before requesting
+  - calls the API client with a **non-null asserted** route param (e.g. `userId!`)
+  - types the response payload (e.g. `const data: GetUserByIdResponseDto = response.data`)
+  - updates state from `data.data.<field>`
+  - uses `try/catch/finally` and always clears loading in `finally`
+  - sets an error message from `err.message` or a translated fallback key
+
+### Good
+
+```tsx
+const fetchSomething = async () => {
+  try {
+    setLoading(true)
+    setError(null)
+    const response = await api.getThing(id!)
+    const data: SomeDto = response.data
+    setThing(data.data.thing)
+  } catch (err: any) {
+    setError(err.message || t('some.translation.fallback'))
+  } finally {
+    setLoading(false)
+  }
+}
+```
+
+### Avoid
+
+```tsx
+// Avoid: no loading reset, untyped response, untranslated strings
+const fetchSomething = async () => {
+  const res = await api.getThing(id)
+  setThing(res.data)
+}
+```
+
+## Mutations + toasts pattern
+
+- For “action” endpoints (block/unblock, upsert links):
+  - call API client method
+  - on success, use `handleApiSuccess(response.data, ...)` with translated message
+  - apply local state update inside the provided callback
+  - on error, use `handleApiError(err, null, callback?)`
+
+## Form editing conventions (PowerBI links)
+
+- **Edit mode toggle**:
+  - `handleEdit...` enters edit mode and clears errors/unsaved flag.
+  - `handleCancel...` resets local form state back to source-of-truth state and exits edit mode.
+- **Change handler**:
+  - update one key in the `Record` state
+  - set `hasUnsavedChanges` true
+  - clear that field’s error as soon as the user edits it
+- **Validation**:
+  - validate single field with a dedicated function (here via `new URL()` parsing)
+  - validate all fields, collect errors into a `Record`, set state once, return boolean
+- **Save**:
+  - validate early and return if invalid
+  - show a saving flag (`isSaving...`)
+  - map state into an API DTO and filter empty values
+  - disable buttons/inputs when saving
+
+## Rendering conventions (UI/UX)
+
+- **Loading**: full-page centered message using Tailwind layout classes.
+- **Error/empty**:
+  - show red text with either the error or a translated “not found”
+  - provide a “Back” button that uses the same handler as navigation
+- **Header**:
+  - show avatar initial, name, email
+  - show a status badge driven by an enum (`UserStatus`) with conditional styling and icon
+  - show a primary action button whose label/variant changes by status
+- **Sections**:
+  - use `Card` + `CardContent` with consistent padding (`p-6`)
+  - section headers include an icon + translated title
+- **RTL support**:
+  - apply `rtl:` Tailwind variants for direction-sensitive icons (e.g. rotate back arrow)
+
+## Small interaction patterns
+
+- **Copy to clipboard**:
+  - use `navigator.clipboard.writeText(...)`
+  - set a short-lived “copied” state and reset via `setTimeout`
+- **Open external link**:
+  - use `window.open(url, '_blank')` from an icon button
+- **Disable logic**:
+  - disable save buttons when `isSaving` or when there are no changes
+
+## Translation key conventions
+
+- Use nested keys like:
+  - `admin.userDetails.*` for feature-specific labels and messages
+  - generic keys like `loading`, `active`, `blocked`, `cancel`, `email`, `name`, `role`, `status` when they exist
+

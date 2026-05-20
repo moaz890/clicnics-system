@@ -1,0 +1,43 @@
+{
+  "common": {
+    "appName": "منصة العيادات",
+    "loading": "جاري التحميل…",
+    "save": "حفظ",
+    "cancel": "إلغاء"
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "name": "الاسم",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "register": "إنشاء حساب",
+    "logIn": "تسجيل الدخول",
+    "createAccount": "إنشاء حسابك",
+    "welcomeBack": "مرحباً بعودتك",
+    "loginSubtitle": "سجّل الدخول إلى لوحة التحكم",
+    "forgotPassword": "نسيت كلمة المرور؟",
+    "alreadyHaveAccount": "لديك حساب بالفعل؟",
+    "noAccount": "ليس لديك حساب؟",
+    "signUp": "إنشاء حساب",
+    "orLoginWith": "أو سجّل الدخول عبر",
+    "heroTagline": "رحلتك نحو العافية تبدأ هنا. مرحباً بك في {platformName}.",
+    "emailRequired": "البريد الإلكتروني مطلوب",
+    "emailInvalid": "أدخل بريداً إلكترونياً صالحاً",
+    "passwordRequired": "كلمة المرور مطلوبة",
+    "nameMin": "يجب أن يكون الاسم حرفين على الأقل",
+    "passwordMin": "يجب أن تكون كلمة المرور 8 أحرف على الأقل",
+    "passwordUppercase": "أضف حرفاً كبيراً واحداً على الأقل",
+    "passwordNumber": "أضف رقماً واحداً على الأقل",
+    "confirmPasswordRequired": "يرجى تأكيد كلمة المرور",
+    "passwordMismatch": "كلمتا المرور غير متطابقتين",
+    "loginError": "البريد أو كلمة المرور غير صحيحة. حاول مرة أخرى.",
+    "registerError": "تعذر إنشاء الحساب. حاول مرة أخرى.",
+    "socialComingSoon": "تسجيل الدخول الاجتماعي قريباً"
+  },
+  "dashboard": {
+    "title": "لوحة التحكم",
+    "welcome": "مرحباً بك في مساحة عمل العيادة"
+  }
+}

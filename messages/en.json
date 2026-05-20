@@ -1,0 +1,43 @@
+{
+  "common": {
+    "appName": "Clinic Platform",
+    "loading": "Loading…",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "auth": {
+    "login": "Sign in",
+    "logout": "Sign out",
+    "email": "Email",
+    "password": "Password",
+    "name": "Name",
+    "confirmPassword": "Confirm Password",
+    "register": "Register",
+    "logIn": "Log In",
+    "createAccount": "Create Your Account",
+    "welcomeBack": "Welcome Back",
+    "loginSubtitle": "Log in to your dashboard",
+    "forgotPassword": "Forgot Password?",
+    "alreadyHaveAccount": "Already have an account?",
+    "noAccount": "Don't have an account?",
+    "signUp": "Sign Up",
+    "orLoginWith": "Or Log in with",
+    "heroTagline": "Your Journey to Wellness Starts Here. Welcome to {platformName}.",
+    "emailRequired": "Email is required",
+    "emailInvalid": "Enter a valid email address",
+    "passwordRequired": "Password is required",
+    "nameMin": "Name must be at least 2 characters",
+    "passwordMin": "Password must be at least 8 characters",
+    "passwordUppercase": "Include at least one uppercase letter",
+    "passwordNumber": "Include at least one number",
+    "confirmPasswordRequired": "Please confirm your password",
+    "passwordMismatch": "Passwords do not match",
+    "loginError": "Invalid email or password. Please try again.",
+    "registerError": "Could not create your account. Please try again.",
+    "socialComingSoon": "Social sign-in coming soon"
+  },
+  "dashboard": {
+    "title": "Dashboard",
+    "welcome": "Welcome to your clinic workspace"
+  }
+}
