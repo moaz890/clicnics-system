@@ -2,7 +2,7 @@ import { configureStore, type Action, type ThunkAction } from "@reduxjs/toolkit"
 import { setupListeners } from "@reduxjs/toolkit/query";
 import authReducer from "@/features/auth/authSlice";
 import "@/features/auth/authApi";
-import "@/features/clinics/clinicsApi";
+import "@/features/clinics/store/clinicsApi";
 import "@/features/appointments/appointmentsApi";
 import { baseApi } from "./baseApi";
 
