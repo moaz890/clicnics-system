@@ -18,7 +18,7 @@ interface AuthGuardProps {
 
 /**
  * Client guard for protected app shells. Middleware blocks missing/expired
- * tokens first; this catches stale client state and API 401 fallout.
+ * tokens first; this catches stale client state when cookies are cleared.
  */
 export function AuthGuard({ children }: AuthGuardProps) {
   const dispatch = useAppDispatch();

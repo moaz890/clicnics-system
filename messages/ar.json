@@ -177,7 +177,10 @@
     "startTimeRequired": "وقت البداية مطلوب",
     "endTimeRequired": "وقت النهاية مطلوب",
     "scheduleTimeOrder": "يجب أن يكون وقت الإغلاق بعد وقت الفتح",
-    "userIdRequired": "سياق المستخدم مطلوب",
+    "userIdRequired": "سياق المستخدم مطلوب. سجّل الدخول مرة أخرى.",
+    "latitudeInvalid": "أدخل خط عرض صالحاً",
+    "longitudeInvalid": "أدخل خط طول صالحاً",
+    "formValidationSummary": "صحّح الحقول المميزة قبل الحفظ.",
     "backToList": "العودة للعيادات",
     "clinicNotFound": "العيادة غير موجودة أو غير متاحة.",
     "tabOverview": "نظرة عامة وتحليلات",
@@ -189,10 +192,12 @@
     "closed": "مغلق",
     "noHours": "لا توجد ساعات محددة",
     "liveSlotsTitle": "التوافر اللحظي",
-    "liveSlotsDescription": "عرض تشخيصي للمواعيد القابلة للحجز من الخادم.",
+    "liveSlotsDescription": "اختر تاريخاً لعرض المواعيد المتاحة في ذلك اليوم.",
+    "selectDate": "اختر التاريخ",
     "refreshSlots": "تحديث المواعيد",
     "loadingSlots": "جاري تحميل المواعيد المتاحة…",
     "slotsError": "تعذر تحميل المواعيد المتاحة.",
-    "noSlots": "لا توجد مواعيد متاحة لهذه العيادة حالياً."
+    "noSlots": "لا توجد مواعيد متاحة لهذه العيادة حالياً.",
+    "noSlotsOnDate": "لا توجد مواعيد متاحة في {date}."
   }
 }

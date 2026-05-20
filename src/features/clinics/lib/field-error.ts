@@ -13,6 +13,9 @@ const CLINIC_ERROR_KEYS = new Set([
   "endTimeRequired",
   "scheduleTimeOrder",
   "userIdRequired",
+  "latitudeInvalid",
+  "longitudeInvalid",
+  "formValidationSummary",
 ]);
 
 export function resolveClinicFieldError(

@@ -1,22 +1,16 @@
 import { baseApi } from "@/store/baseApi";
-import {
-  clearAuthCookies,
-  getRefreshToken,
-  setAuthCookies,
-} from "@/lib/auth/cookies";
+import { clearAuthCookies, setAuthCookies } from "@/lib/auth/cookies";
 import type {
-  AuthUser,
   ForgotPasswordRequest,
   VerifyResetCodeRequest,
   ResetPasswordRequest,
   ChangePasswordRequest,
   LoginRequest,
   LoginResponse,
-  RefreshTokenResponse,
   RegisterRequest,
   RegisterResponse,
 } from "@/types/auth";
-import { normalizeLoginResponse, normalizeRefreshResponse } from "@/lib/auth/normalize";
+import { normalizeLoginResponse } from "@/lib/auth/normalize";
 import { clearCredentials, setCredentials } from "./authSlice";
 
 export const authApi = baseApi.injectEndpoints({
@@ -46,23 +40,6 @@ export const authApi = baseApi.injectEndpoints({
         const { data } = await queryFulfilled;
         setAuthCookies(data.accessToken, data.refreshToken);
         dispatch(setCredentials({ user: data.user }));
-      },
-    }),
-
-    refreshToken: builder.mutation<RefreshTokenResponse, void>({
-      query: () => ({
-        url: "/auth/refresh",
-        method: "POST",
-        body: { refreshToken: getRefreshToken() },
-      }),
-      transformResponse: (raw: unknown) => normalizeRefreshResponse(raw),
-      async onQueryStarted(_arg, { queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          setAuthCookies(data.accessToken, data.refreshToken);
-        } catch {
-          clearAuthCookies();
-        }
       },
     }),
 
@@ -99,26 +76,12 @@ export const authApi = baseApi.injectEndpoints({
     }),
 
     logout: builder.mutation<void, void>({
-      // Backend has no /auth/logout — clear local session only.
       queryFn: async (_arg, { dispatch }) => {
         clearAuthCookies();
         dispatch(clearCredentials());
         return { data: undefined };
       },
       invalidatesTags: ["Auth"],
-    }),
-
-    getMe: builder.query<AuthUser, void>({
-      query: () => "/auth/me",
-      providesTags: ["Auth"],
-      async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        try {
-          const { data } = await queryFulfilled;
-          dispatch(setCredentials({ user: data }));
-        } catch {
-          dispatch(clearCredentials());
-        }
-      },
     }),
   }),
 });
@@ -131,7 +94,4 @@ export const {
   useResetPasswordMutation,
   useChangePasswordMutation,
   useLogoutMutation,
-  useRefreshTokenMutation,
-  useGetMeQuery,
-  useLazyGetMeQuery,
 } = authApi;

@@ -5,7 +5,9 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Loader2 } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { toast } from "sonner";
 import { useAppSelector } from "@/store/hooks";
+import { getSessionUserId } from "@/lib/auth/session";
 import {
   useCreateClinicMutation,
   useUpdateClinicMutation,
@@ -59,7 +61,7 @@ function buildDefaultValues(
       name: "",
       address: "",
       phone: "",
-      location: { lat: 0, lng: 0 },
+      location: { lat: 30.0444, lng: 31.2357 },
       examinationFee: 0,
       slotDuration: 30,
       schedules: getDefaultFormSchedules(),
@@ -80,9 +82,18 @@ function buildDefaultValues(
   };
 }
 
+function parseNumericInput(raw: string): number {
+  if (raw === "") {
+    return 0;
+  }
+  const parsed = Number(raw);
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
 export function ClinicForm({ mode, clinic, onSuccess }: ClinicFormProps) {
   const t = useTranslations("clinics");
-  const userId = useAppSelector((state) => state.auth.user?.id ?? "");
+  const reduxUserId = useAppSelector((state) => state.auth.user?.id);
+  const userId = getSessionUserId(reduxUserId);
   const [createClinic, { isLoading: isCreating, isError: isCreateError }] =
     useCreateClinicMutation();
   const [updateClinic, { isLoading: isUpdating, isError: isUpdateError }] =
@@ -91,6 +102,7 @@ export function ClinicForm({ mode, clinic, onSuccess }: ClinicFormProps) {
   const form = useForm<ClinicFormValues>({
     resolver: zodResolver(clinicFormSchema),
     defaultValues: buildDefaultValues(userId, clinic),
+    mode: "onSubmit",
   });
 
   useEffect(() => {
@@ -98,9 +110,17 @@ export function ClinicForm({ mode, clinic, onSuccess }: ClinicFormProps) {
   }, [clinic, userId, form]);
 
   const isLoading = isCreating || isUpdating;
+  const { errors, isSubmitted } = form.formState;
+
+  const onInvalid = () => {
+    toast.error(t("formValidationSummary"));
+  };
 
   const onSubmit = async (values: ClinicFormValues) => {
-    const payload = formValuesToClinicPayload(values);
+    const payload = formValuesToClinicPayload({
+      ...values,
+      userId: values.userId || userId,
+    });
     try {
       if (mode === "create") {
         await createClinic(payload).unwrap();
@@ -113,10 +133,35 @@ export function ClinicForm({ mode, clinic, onSuccess }: ClinicFormProps) {
     }
   };
 
+  const scheduleRootError =
+    typeof errors.schedules?.message === "string"
+      ? errors.schedules.message
+      : undefined;
+  const userIdError =
+    typeof errors.userId?.message === "string" ? errors.userId.message : undefined;
+
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-5" noValidate>
+      <form
+        onSubmit={form.handleSubmit(onSubmit, onInvalid)}
+        className="space-y-5"
+        noValidate
+      >
         <input type="hidden" {...form.register("userId")} />
+
+        {isSubmitted && (userIdError || scheduleRootError) && (
+          <div
+            role="alert"
+            className="rounded-xl border border-destructive/30 bg-destructive/5 px-4 py-3 text-sm text-destructive"
+          >
+            {userIdError && (
+              <p>{resolveClinicFieldError(t, userIdError)}</p>
+            )}
+            {scheduleRootError && (
+              <p>{resolveClinicFieldError(t, scheduleRootError)}</p>
+            )}
+          </div>
+        )}
 
         <FormField
           control={form.control}
@@ -192,13 +237,22 @@ export function ClinicForm({ mode, clinic, onSuccess }: ClinicFormProps) {
                 <FormLabel className="text-start">{t("latitude")}</FormLabel>
                 <FormControl>
                   <Input
-                    {...field}
                     type="number"
                     step="any"
+                    value={Number.isFinite(field.value) ? field.value : ""}
+                    onChange={(e) => field.onChange(parseNumericInput(e.target.value))}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
                     className="h-11 cursor-text rounded-xl"
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>
+                  {resolveClinicFieldError(
+                    t,
+                    form.formState.errors.location?.lat?.message,
+                  )}
+                </FormMessage>
               </FormItem>
             )}
           />
@@ -210,13 +264,22 @@ export function ClinicForm({ mode, clinic, onSuccess }: ClinicFormProps) {
                 <FormLabel className="text-start">{t("longitude")}</FormLabel>
                 <FormControl>
                   <Input
-                    {...field}
                     type="number"
                     step="any"
+                    value={Number.isFinite(field.value) ? field.value : ""}
+                    onChange={(e) => field.onChange(parseNumericInput(e.target.value))}
+                    onBlur={field.onBlur}
+                    name={field.name}
+                    ref={field.ref}
                     className="h-11 cursor-text rounded-xl"
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage>
+                  {resolveClinicFieldError(
+                    t,
+                    form.formState.errors.location?.lng?.message,
+                  )}
+                </FormMessage>
               </FormItem>
             )}
           />
@@ -232,9 +295,15 @@ export function ClinicForm({ mode, clinic, onSuccess }: ClinicFormProps) {
                 <FormControl>
                   <div className="relative">
                     <Input
-                      {...field}
                       type="number"
                       min={0}
+                      value={Number.isFinite(field.value) ? field.value : ""}
+                      onChange={(e) =>
+                        field.onChange(parseNumericInput(e.target.value))
+                      }
+                      onBlur={field.onBlur}
+                      name={field.name}
+                      ref={field.ref}
                       className="h-11 cursor-text rounded-xl pe-14"
                     />
                     <span className="pointer-events-none absolute end-3 top-1/2 -translate-y-1/2 text-xs font-medium text-muted-foreground">

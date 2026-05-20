@@ -51,7 +51,6 @@ export function LoginForm() {
       await login(values).unwrap();
       const destination = resolveCallbackPath(searchParams.get("callbackUrl"));
       router.replace(destination);
-      router.refresh();
     } catch {
       /* isError handles UI */
     }

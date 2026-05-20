@@ -74,11 +74,17 @@ export const clinicsApi = baseApi.injectEndpoints({
       ],
     }),
 
-    getClinicAvailableSlots: builder.query<AvailableSlot[], string>({
-      query: (id) => `/clinic/available-slots/${id}`,
+    getClinicAvailableSlots: builder.query<
+      AvailableSlot[],
+      { clinicId: string; date: string }
+    >({
+      query: ({ clinicId, date }) => ({
+        url: `/clinic/all-available-slots/${clinicId}`,
+        params: { date },
+      }),
       transformResponse: (raw: unknown) => normalizeAvailableSlots(raw),
-      providesTags: (_result, _error, id) => [
-        { type: "Clinic" as const, id: `SLOTS-${id}` },
+      providesTags: (_result, _error, { clinicId, date }) => [
+        { type: "Clinic" as const, id: `SLOTS-${clinicId}-${date}` },
       ],
     }),
   }),

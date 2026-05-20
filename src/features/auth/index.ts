@@ -4,7 +4,6 @@ export {
   useVerifyResetCodeMutation,
   useResetPasswordMutation,
   useChangePasswordMutation,
-  useGetMeQuery,
   useLoginMutation,
   useLogoutMutation,
   useRegisterMutation,

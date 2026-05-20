@@ -43,6 +43,7 @@ export function ClinicFormDialog({
         <ScrollArea className="max-h-[calc(90vh-7rem)]">
           <div className="px-6 py-5">
             <ClinicForm
+              key={open ? (mode === "create" ? "create" : (clinic?.id ?? "edit")) : "closed"}
               mode={mode}
               clinic={clinic}
               onSuccess={() => onOpenChange(false)}

@@ -10,9 +10,17 @@ export const WEEK_DAYS = [
   { key: "sunday", labelKey: "sunday" },
 ] as const;
 
+const WEEKDAY_KEYS = new Set([
+  "monday",
+  "tuesday",
+  "wednesday",
+  "thursday",
+  "friday",
+]);
+
 export const DEFAULT_SCHEDULE_TEMPLATE = WEEK_DAYS.map((day) => ({
   day: day.key,
-  enabled: false,
+  enabled: WEEKDAY_KEYS.has(day.key),
   startTime: "09:00",
   endTime: "17:00",
 }));

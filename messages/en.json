@@ -177,7 +177,10 @@
     "startTimeRequired": "Start time is required",
     "endTimeRequired": "End time is required",
     "scheduleTimeOrder": "End time must be after start time",
-    "userIdRequired": "User context is required",
+    "userIdRequired": "User context is required. Sign in again.",
+    "latitudeInvalid": "Enter a valid latitude",
+    "longitudeInvalid": "Enter a valid longitude",
+    "formValidationSummary": "Fix the highlighted fields before saving.",
     "backToList": "Back to clinics",
     "clinicNotFound": "Clinic not found or unavailable.",
     "tabOverview": "Overview & Analytics",
@@ -189,10 +192,12 @@
     "closed": "Closed",
     "noHours": "No hours configured",
     "liveSlotsTitle": "Real-time availability",
-    "liveSlotsDescription": "Diagnostic view of bookable slots returned by the server.",
+    "liveSlotsDescription": "Pick a date to load bookable slots for that day.",
+    "selectDate": "Select date",
     "refreshSlots": "Refresh slots",
     "loadingSlots": "Loading available slots…",
     "slotsError": "Could not load available slots.",
-    "noSlots": "No slots available for this clinic right now."
+    "noSlots": "No slots available for this clinic right now.",
+    "noSlotsOnDate": "No slots available on {date}."
   }
 }

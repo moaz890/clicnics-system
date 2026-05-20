@@ -5,25 +5,60 @@ import { Controller, useFormContext } from "react-hook-form";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { resolveClinicFieldError } from "../lib/field-error";
 import { WEEK_DAYS } from "../lib/constants";
 import type { ClinicFormValues } from "../schemas/clinicFormSchema";
 
 export function ClinicScheduleFields() {
   const t = useTranslations("clinics");
-  const { control } = useFormContext<ClinicFormValues>();
+  const {
+    control,
+    formState: { errors, isSubmitted },
+  } = useFormContext<ClinicFormValues>();
+
+  const scheduleRootError =
+    typeof errors.schedules?.message === "string"
+      ? errors.schedules.message
+      : undefined;
 
   return (
     <div className="space-y-3">
       <Label className="text-start text-sm font-medium text-popover-foreground">
         {t("operationalSchedule")}
       </Label>
+      {isSubmitted && scheduleRootError && (
+        <p role="alert" className="text-sm text-destructive">
+          {resolveClinicFieldError(t, scheduleRootError)}
+        </p>
+      )}
       <div className="space-y-2 rounded-xl border border-border bg-muted/30 p-3">
         {WEEK_DAYS.map((day, index) => (
           <Controller
             key={day.key}
             control={control}
             name={`schedules.${index}`}
-            render={({ field }) => (
+            render={({ field }) => {
+              const dayErrors = errors.schedules?.[index];
+              const startTimeError =
+                dayErrors &&
+                typeof dayErrors === "object" &&
+                "startTime" in dayErrors &&
+                dayErrors.startTime &&
+                typeof dayErrors.startTime === "object" &&
+                "message" in dayErrors.startTime
+                  ? String(dayErrors.startTime.message)
+                  : undefined;
+              const endTimeError =
+                dayErrors &&
+                typeof dayErrors === "object" &&
+                "endTime" in dayErrors &&
+                dayErrors.endTime &&
+                typeof dayErrors.endTime === "object" &&
+                "message" in dayErrors.endTime
+                  ? String(dayErrors.endTime.message)
+                  : undefined;
+
+              return (
               <div className="flex flex-col gap-2 rounded-lg border border-border/60 bg-card p-3 sm:flex-row sm:items-center sm:gap-4">
                 <div className="flex items-center gap-3 sm:min-w-36">
                   <Checkbox
@@ -57,7 +92,13 @@ export function ClinicScheduleFields() {
                         })
                       }
                       className="h-10 cursor-pointer rounded-lg"
+                      aria-invalid={!!startTimeError}
                     />
+                    {startTimeError && (
+                      <p className="text-xs text-destructive">
+                        {resolveClinicFieldError(t, startTimeError)}
+                      </p>
+                    )}
                   </div>
                   <div className="flex flex-1 flex-col gap-1">
                     <span className="text-xs text-muted-foreground">
@@ -74,11 +115,18 @@ export function ClinicScheduleFields() {
                         })
                       }
                       className="h-10 cursor-pointer rounded-lg"
+                      aria-invalid={!!endTimeError}
                     />
+                    {endTimeError && (
+                      <p className="text-xs text-destructive">
+                        {resolveClinicFieldError(t, endTimeError)}
+                      </p>
+                    )}
                   </div>
                 </div>
               </div>
-            )}
+            );
+            }}
           />
         ))}
       </div>
