@@ -13,8 +13,10 @@ export default async function HomePage({
   const tenantId = await getTenantIdFromHeaders();
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center gap-6 p-8">
-      <h1 className="text-3xl font-semibold tracking-tight">{t("appName")}</h1>
+    <main className="flex flex-1 flex-col items-center justify-center gap-6 bg-background p-8">
+      <h1 className="text-3xl font-bold tracking-tight text-foreground">
+        {t("appName")}
+      </h1>
       {tenantId ? (
         <p className="text-muted-foreground">
           Tenant: <span className="font-mono">{tenantId}</span>

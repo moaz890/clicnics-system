@@ -201,7 +201,7 @@ export function RegisterForm() {
                       {t("termsPrefix")}{" "}
                       <Link
                         href="/terms"
-                        className="cursor-pointer font-medium text-primary transition-colors hover:text-teal-800 hover:underline"
+                        className="cursor-pointer font-medium text-primary transition-colors hover:text-[var(--design-primary-active)] hover:underline"
                       >
                         {t("termsLink")}
                       </Link>
@@ -241,7 +241,7 @@ export function RegisterForm() {
         {t("alreadyHaveAccount")}{" "}
         <Link
           href="/login"
-          className="cursor-pointer font-semibold text-primary transition-colors hover:text-teal-800 hover:underline"
+          className="cursor-pointer font-semibold text-primary transition-colors hover:text-[var(--design-primary-active)] hover:underline"
         >
           {t("signIn")}
         </Link>

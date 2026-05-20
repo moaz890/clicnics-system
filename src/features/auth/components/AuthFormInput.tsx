@@ -52,7 +52,7 @@ export const AuthFormInput = forwardRef<HTMLInputElement, AuthFormInputProps>(
           type={inputType}
           placeholder={placeholder}
           className={cn(
-            "h-11 rounded-xl cursor-text border-border bg-card ps-10 text-popover-foreground shadow-none focus-visible:border-teal-700 focus-visible:ring-teal-700/25",
+            "h-11 rounded-xl cursor-text border-border bg-card ps-10 text-popover-foreground shadow-none focus-visible:border-primary focus-visible:ring-primary/25",
             isPassword && "pe-10",
             className,
           )}

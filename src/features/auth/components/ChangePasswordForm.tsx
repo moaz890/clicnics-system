@@ -161,7 +161,7 @@ export function ChangePasswordForm() {
             <Button
               type="submit"
               disabled={isLoading}
-              className="h-11 min-w-40 cursor-pointer rounded-xl bg-teal-700 px-6 text-sm font-semibold text-white hover:bg-teal-800"
+              className="h-11 min-w-40 cursor-pointer rounded-xl bg-primary px-6 text-sm font-semibold text-primary-foreground hover:bg-[var(--design-primary-active)]"
             >
               {isLoading && (
                 <Loader2 className="size-4 animate-spin" aria-hidden />

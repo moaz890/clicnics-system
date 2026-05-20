@@ -28,7 +28,7 @@ export function MobileNavSheet() {
           <Button
             variant="ghost"
             size="icon"
-            className="cursor-pointer text-slate-800 dark:text-slate-100"
+            className="cursor-pointer text-foreground"
             aria-label={t("openMobileMenu")}
           />
         }
@@ -37,10 +37,10 @@ export function MobileNavSheet() {
       </SheetTrigger>
       <SheetContent
         side={isRtl ? "left" : "right"}
-        className="w-[min(100%,20rem)] border-slate-200/80 bg-white/95 backdrop-blur-md dark:border-slate-800/80 dark:bg-slate-900/95"
+        className="w-[min(100%,20rem)] border-border bg-popover/95 backdrop-blur-md"
       >
         <SheetHeader>
-          <SheetTitle className="text-start text-slate-800 dark:text-slate-100">
+          <SheetTitle className="text-start text-foreground">
             {t("menu")}
           </SheetTitle>
         </SheetHeader>
@@ -59,7 +59,7 @@ export function MobileNavSheet() {
                   "flex cursor-pointer items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors",
                   active
                     ? "bg-[var(--design-primary)]/10 text-[var(--design-primary)] dark:text-[var(--design-primary)]"
-                    : "text-slate-700 hover:bg-slate-100 dark:text-slate-200 dark:hover:bg-slate-800",
+                    : "text-[var(--design-body)] hover:bg-[var(--design-surface-soft)] dark:text-[var(--design-on-dark)] dark:hover:bg-[var(--design-surface-dark-soft)]",
                 )}
               >
                 <Icon className="size-4 shrink-0 opacity-80" aria-hidden />

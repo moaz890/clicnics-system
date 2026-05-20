@@ -22,7 +22,7 @@ export function DesktopNavLinks() {
                 "flex cursor-pointer items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors focus-visible:ring-2 focus-visible:ring-ring/50 focus-visible:outline-none",
                 active
                   ? "text-[var(--design-primary)]"
-                  : "text-slate-600 hover:bg-slate-100/80 hover:text-slate-900 dark:text-slate-300 dark:hover:bg-slate-800/80 dark:hover:text-slate-100",
+                  : "text-muted-foreground hover:bg-[var(--design-surface-soft)] hover:text-foreground dark:hover:bg-[var(--design-surface-dark-soft)] dark:hover:text-[var(--design-on-dark)]",
               )}
             >
               <Icon className="size-4 opacity-70" aria-hidden />

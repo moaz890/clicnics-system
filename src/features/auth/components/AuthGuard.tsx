@@ -53,7 +53,7 @@ export function AuthGuard({ children }: AuthGuardProps) {
         aria-live="polite"
         aria-label="Checking authentication"
       >
-        <Spinner className="size-8 text-[var(--auth-teal)]" />
+        <Spinner className="size-8 text-primary" />
       </div>
     );
   }

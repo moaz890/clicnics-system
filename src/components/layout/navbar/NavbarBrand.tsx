@@ -18,13 +18,13 @@ export function NavbarBrand({ className }: { className?: string }) {
       )}
     >
       <span
-        className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[var(--design-primary)] text-sm font-bold text-white shadow-sm"
+        className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[var(--design-primary)] text-sm font-bold text-[var(--design-on-primary)] shadow-sm"
         aria-hidden
       >
         C
       </span>
       <span className="flex flex-col leading-tight">
-        <span className="text-sm font-semibold tracking-tight text-slate-800 dark:text-slate-100">
+        <span className="text-sm font-semibold tracking-tight text-foreground">
           {t("appName")}
         </span>
         <span className="sr-only"> — {tNav("home")}</span>

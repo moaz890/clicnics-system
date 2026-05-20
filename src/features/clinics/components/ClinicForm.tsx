@@ -374,7 +374,7 @@ export function ClinicForm({ mode, clinic, onSuccess }: ClinicFormProps) {
                 <Switch
                   checked={field.value}
                   onCheckedChange={field.onChange}
-                  className="cursor-pointer data-checked:bg-teal-600"
+                  className="cursor-pointer data-checked:bg-[var(--design-accent-teal)]"
                 />
               </FormControl>
             </FormItem>
@@ -391,7 +391,7 @@ export function ClinicForm({ mode, clinic, onSuccess }: ClinicFormProps) {
           <Button
             type="submit"
             disabled={isLoading}
-            className="cursor-pointer rounded-xl bg-teal-700 hover:bg-teal-800"
+            className="cursor-pointer rounded-xl bg-primary text-primary-foreground hover:bg-[var(--design-primary-active)]"
           >
             {isLoading && <Loader2 className="size-4 animate-spin" aria-hidden />}
             {mode === "create" ? t("createClinic") : t("saveChanges")}

@@ -19,8 +19,8 @@ export function ClinicStatusBadge({
       className={cn(
         "cursor-default font-medium",
         isActive
-          ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-700 dark:text-emerald-400"
-          : "border-slate-300/80 bg-slate-100 text-slate-600 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-400",
+          ? "border-[var(--design-success)]/30 bg-[var(--design-success)]/10 text-[var(--design-success)]"
+          : "border-[var(--design-hairline)] bg-[var(--design-surface-soft)] text-[var(--design-muted)]",
         className,
       )}
     >

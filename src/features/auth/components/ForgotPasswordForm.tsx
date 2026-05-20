@@ -257,7 +257,7 @@ export function ForgotPasswordForm() {
                     <Button
                       type="submit"
                       disabled={isSendingEmail}
-                      className="h-11 w-full cursor-pointer rounded-xl bg-teal-700 text-sm font-semibold text-white hover:bg-teal-800"
+                      className="h-11 w-full cursor-pointer rounded-xl bg-primary text-sm font-semibold text-primary-foreground hover:bg-[var(--design-primary-active)]"
                     >
                       {isSendingEmail && (
                         <Loader2 className="size-4 animate-spin" aria-hidden />
@@ -272,7 +272,7 @@ export function ForgotPasswordForm() {
             <p className="mt-6 text-center text-sm text-muted-foreground">
               <Link
                 href="/login"
-                className="cursor-pointer font-medium text-primary transition-colors hover:text-teal-800 hover:underline"
+                className="cursor-pointer font-medium text-primary transition-colors hover:text-[var(--design-primary-active)] hover:underline"
               >
                 {t("backToSignIn")}
               </Link>
@@ -334,7 +334,7 @@ export function ForgotPasswordForm() {
                                     <InputOTPSlot
                                       key={index}
                                       index={index}
-                                      className="size-11 rounded-lg border-input text-base shadow-xs first:rounded-lg last:rounded-lg data-[active=true]:border-teal-700 data-[active=true]:ring-3 data-[active=true]:ring-teal-700/25"
+                                      className="size-11 rounded-lg border-input text-base shadow-xs first:rounded-lg last:rounded-lg data-[active=true]:border-primary data-[active=true]:ring-3 data-[active=true]:ring-primary/25"
                                     />
                                   ),
                                 )}
@@ -368,7 +368,7 @@ export function ForgotPasswordForm() {
                     <Button
                       type="submit"
                       disabled={isVerifying || otpForm.watch("code").length < OTP_LENGTH}
-                      className="h-11 w-full cursor-pointer rounded-xl bg-teal-700 text-sm font-semibold text-white hover:bg-teal-800"
+                      className="h-11 w-full cursor-pointer rounded-xl bg-primary text-sm font-semibold text-primary-foreground hover:bg-[var(--design-primary-active)]"
                     >
                       {isVerifying && (
                         <Loader2 className="size-4 animate-spin" aria-hidden />
@@ -386,7 +386,7 @@ export function ForgotPasswordForm() {
                   type="button"
                   onClick={handleResendCode}
                   disabled={isSendingEmail}
-                  className="cursor-pointer font-medium text-primary transition-colors hover:text-teal-800 hover:underline disabled:cursor-not-allowed disabled:opacity-50"
+                  className="cursor-pointer font-medium text-primary transition-colors hover:text-[var(--design-primary-active)] hover:underline disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   {isSendingEmail ? (
                     <span className="inline-flex items-center gap-2">
@@ -416,7 +416,7 @@ export function ForgotPasswordForm() {
               <p className="text-muted-foreground">
                 <Link
                   href="/login"
-                  className="cursor-pointer font-medium text-primary transition-colors hover:text-teal-800 hover:underline"
+                  className="cursor-pointer font-medium text-primary transition-colors hover:text-[var(--design-primary-active)] hover:underline"
                 >
                   {t("backToSignIn")}
                 </Link>
@@ -536,7 +536,7 @@ export function ForgotPasswordForm() {
                     <Button
                       type="submit"
                       disabled={isResetting}
-                      className="h-11 w-full cursor-pointer rounded-xl bg-teal-700 text-sm font-semibold text-white hover:bg-teal-800"
+                      className="h-11 w-full cursor-pointer rounded-xl bg-primary text-sm font-semibold text-primary-foreground hover:bg-[var(--design-primary-active)]"
                     >
                       {isResetting && (
                         <Loader2 className="size-4 animate-spin" aria-hidden />
@@ -551,7 +551,7 @@ export function ForgotPasswordForm() {
             <p className="mt-6 text-center text-sm text-muted-foreground">
               <Link
                 href="/login"
-                className="cursor-pointer font-medium text-primary transition-colors hover:text-teal-800 hover:underline"
+                className="cursor-pointer font-medium text-primary transition-colors hover:text-[var(--design-primary-active)] hover:underline"
               >
                 {t("backToSignIn")}
               </Link>

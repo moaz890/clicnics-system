@@ -28,7 +28,7 @@ export function ClinicScheduleTab({ clinic }: { clinic: Clinic }) {
             <Card
               className={cn(
                 "h-full border-border/80 transition-shadow",
-                isOpen && "ring-1 ring-teal-600/20",
+                isOpen && "ring-1 ring-[var(--design-accent-teal)]/20",
               )}
             >
               <CardHeader className="pb-2">
@@ -38,8 +38,8 @@ export function ClinicScheduleTab({ clinic }: { clinic: Clinic }) {
                     className={cn(
                       "rounded-full px-2 py-0.5 text-xs font-medium",
                       isOpen
-                        ? "bg-emerald-500/10 text-emerald-700"
-                        : "bg-muted text-muted-foreground",
+                        ? "bg-[var(--design-success)]/10 text-[var(--design-success)]"
+                        : "bg-[var(--design-surface-soft)] text-[var(--design-muted)]",
                     )}
                   >
                     {isOpen ? t("open") : t("closed")}
@@ -49,7 +49,7 @@ export function ClinicScheduleTab({ clinic }: { clinic: Clinic }) {
               <CardContent>
                 {isOpen && schedule ? (
                   <div className="flex items-center gap-2 text-sm text-popover-foreground">
-                    <Clock className="size-4 text-teal-700" aria-hidden />
+                    <Clock className="size-4 text-primary" aria-hidden />
                     <span dir="ltr">
                       {schedule.startTime} – {schedule.endTime}
                     </span>

@@ -111,7 +111,7 @@ export function ClinicsTable({ onEdit, onDelete }: ClinicsTableProps) {
               <TableCell className="font-medium text-popover-foreground">
                 <Link
                   href={`/dashboard/clinics/${clinic.id}`}
-                  className="cursor-pointer text-start hover:text-teal-700 hover:underline"
+                  className="cursor-pointer text-start hover:text-primary hover:underline"
                 >
                   {clinic.name}
                 </Link>
@@ -129,7 +129,7 @@ export function ClinicsTable({ onEdit, onDelete }: ClinicsTableProps) {
                     onCheckedChange={(checked) =>
                       handleToggleActive(clinic, checked)
                     }
-                    className="cursor-pointer data-checked:bg-teal-600"
+                    className="cursor-pointer data-checked:bg-[var(--design-accent-teal)]"
                     aria-label={
                       clinic.isActive ? t("statusActive") : t("statusInactive")
                     }

@@ -1,6 +1,7 @@
 "use client";
 
 import { forwardRef, useState } from "react";
+import { useTranslations } from "next-intl";
 import { Eye, EyeOff, Lock, Mail, User, type LucideIcon } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -31,6 +32,7 @@ export const AuthField = forwardRef<HTMLInputElement, AuthFieldProps>(
     },
     ref,
   ) {
+    const t = useTranslations("auth");
     const [visible, setVisible] = useState(false);
     const isPassword = type === "password";
     const inputType = isPassword && visible ? "text" : type;
@@ -44,15 +46,15 @@ export const AuthField = forwardRef<HTMLInputElement, AuthFieldProps>(
         </label>
         <div
           className={cn(
-            "group relative flex items-center gap-3 rounded-xl border bg-white px-3 transition-all duration-200",
-            "border-[#e5e2dc] hover:border-[var(--auth-teal)]/40",
-            "focus-within:border-[var(--auth-teal)] focus-within:ring-2 focus-within:ring-[var(--auth-teal)]/25",
+            "group relative flex items-center gap-3 rounded-[var(--design-radius-md)] border bg-[var(--design-canvas)] px-3 transition-all duration-200",
+            "border-[var(--design-hairline)] hover:border-[var(--design-primary)]/40",
+            "focus-within:border-[var(--design-primary)] focus-within:ring-2 focus-within:ring-[var(--design-primary)]/25",
             error &&
-              "border-red-400/70 focus-within:border-red-500 focus-within:ring-red-500/20",
+              "border-[var(--design-error)]/70 focus-within:border-[var(--design-error)] focus-within:ring-[var(--design-error)]/20",
           )}
         >
           <span
-            className="flex shrink-0 text-[var(--auth-teal)]"
+            className="flex shrink-0 text-[var(--design-primary)]"
             aria-hidden
           >
             <Icon className="size-[18px]" strokeWidth={1.75} />
@@ -65,7 +67,7 @@ export const AuthField = forwardRef<HTMLInputElement, AuthFieldProps>(
             aria-invalid={Boolean(error)}
             aria-describedby={error ? `${fieldId}-error` : undefined}
             className={cn(
-              "h-11 min-w-0 flex-1 border-0 bg-transparent py-2 text-sm text-[var(--auth-navy)] outline-none placeholder:text-[#9ca3af]",
+              "h-11 min-w-0 flex-1 border-0 bg-transparent py-2 text-sm text-[var(--design-ink)] outline-none placeholder:text-[var(--design-muted-soft)]",
               isPassword && "pe-10",
               className,
             )}
@@ -75,8 +77,9 @@ export const AuthField = forwardRef<HTMLInputElement, AuthFieldProps>(
             <button
               type="button"
               onClick={() => setVisible((v) => !v)}
-              className="absolute end-3 cursor-pointer rounded-md p-1 text-[#6b7280] transition-colors hover:text-[var(--auth-navy)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--auth-teal)]"
-              aria-label={visible ? "Hide password" : "Show password"}
+              className="absolute end-3 cursor-pointer rounded-md p-1 text-[var(--design-muted)] transition-colors hover:text-[var(--design-ink)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--design-primary)]"
+              aria-label={visible ? t("hidePassword") : t("showPassword")}
+              aria-pressed={visible}
             >
               {visible ? (
                 <EyeOff className="size-[18px]" strokeWidth={1.75} />
@@ -90,7 +93,7 @@ export const AuthField = forwardRef<HTMLInputElement, AuthFieldProps>(
           <p
             id={`${fieldId}-error`}
             role="alert"
-            className="ps-1 text-xs text-red-600"
+            className="ps-1 text-xs text-[var(--design-error)]"
           >
             {error}
           </p>

@@ -57,10 +57,10 @@ export function ClinicSlotsTab({ clinicId }: ClinicSlotsTabProps) {
     <div className="space-y-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="text-start">
-          <h3 className="text-base font-semibold text-slate-900 dark:text-slate-50">
+          <h3 className="text-base font-semibold text-foreground">
             {t("liveSlotsTitle")}
           </h3>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-muted-foreground">
             {t("liveSlotsDescription")}
           </p>
         </div>
@@ -74,7 +74,7 @@ export function ClinicSlotsTab({ clinicId }: ClinicSlotsTabProps) {
               aria-expanded={calendarOpen}
               aria-haspopup="dialog"
             >
-              <CalendarDays className="size-4 text-teal-700" aria-hidden />
+              <CalendarDays className="size-4 text-primary" aria-hidden />
               <span className="text-start">{formattedSelectedDate}</span>
             </PopoverTrigger>
             <PopoverContent align="end" className="w-auto p-0">
@@ -116,7 +116,7 @@ export function ClinicSlotsTab({ clinicId }: ClinicSlotsTabProps) {
         <div
           role="status"
           aria-live="polite"
-          className="flex items-center justify-center gap-2 py-12 text-sm text-slate-600 dark:text-slate-400"
+          className="flex items-center justify-center gap-2 py-12 text-sm text-muted-foreground"
         >
           <Loader2 className="size-5 animate-spin" aria-hidden />
           {t("loadingSlots")}
@@ -135,7 +135,7 @@ export function ClinicSlotsTab({ clinicId }: ClinicSlotsTabProps) {
       {!isLoading && !isError && slots.length === 0 && (
         <div
           role="status"
-          className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-slate-600 dark:text-slate-400"
+          className="rounded-xl border border-dashed border-border p-8 text-center text-sm text-muted-foreground"
         >
           {t("noSlotsOnDate", { date: formattedSelectedDate })}
         </div>
@@ -153,8 +153,8 @@ export function ClinicSlotsTab({ clinicId }: ClinicSlotsTabProps) {
             const chipClass = cn(
               "list-none rounded-full border px-4 py-2 text-sm font-medium",
               available
-                ? "border-teal-600/30 bg-teal-600/10 text-teal-800 dark:text-teal-300"
-                : "border-border bg-muted text-slate-600 line-through opacity-60 dark:text-slate-400",
+                ? "border-[var(--design-success)]/30 bg-[var(--design-success)]/10 text-[var(--design-success)]"
+                : "border-border bg-muted text-muted-foreground line-through opacity-60",
             );
             const chipLabel = available
               ? t("slotAvailable", { time: timeLabel })

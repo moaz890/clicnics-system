@@ -49,40 +49,7 @@
 }
 
 :root {
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.205 0 0);
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.97 0 0);
-  --secondary-foreground: oklch(0.205 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.97 0 0);
-  --accent-foreground: oklch(0.205 0 0);
-  --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.922 0 0);
-  --input: oklch(0.922 0 0);
-  --ring: oklch(0.708 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --radius: 0.625rem;
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.205 0 0);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.97 0 0);
-  --sidebar-accent-foreground: oklch(0.205 0 0);
-  --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.708 0 0);
-
-  /* DESIGN.md — clinic platform tokens */
+  /* DESIGN.md — source tokens */
   --design-primary: #cc785c;
   --design-primary-active: #a9583e;
   --design-primary-disabled: #e6dfd8;
@@ -96,52 +63,90 @@
   --design-canvas: #faf9f5;
   --design-surface-soft: #f5f0e8;
   --design-surface-card: #efe9de;
+  --design-surface-cream-strong: #e8e0d2;
+  --design-surface-dark: #181715;
+  --design-surface-dark-elevated: #252320;
+  --design-surface-dark-soft: #1f1e1b;
   --design-on-primary: #ffffff;
+  --design-on-dark: #faf9f5;
+  --design-on-dark-soft: #a09d96;
   --design-accent-teal: #5db8a6;
+  --design-accent-amber: #e8a55a;
+  --design-success: #5db872;
+  --design-warning: #d4a017;
   --design-error: #c64545;
   --design-radius-md: 8px;
   --design-radius-lg: 12px;
   --design-radius-pill: 9999px;
 
-  /* Auth split-screen (reference layout) */
-  --auth-cream: #faf9f6;
-  --auth-navy: #1e3a5f;
-  --auth-teal: #0f766e;
-  --auth-teal-hover: #0d9488;
+  /* Shadcn semantic map → DESIGN.md (light / cream canvas) */
+  --background: var(--design-canvas);
+  --foreground: var(--design-ink);
+  --card: var(--design-surface-card);
+  --card-foreground: var(--design-ink);
+  --popover: var(--design-canvas);
+  --popover-foreground: var(--design-ink);
+  --primary: var(--design-primary);
+  --primary-foreground: var(--design-on-primary);
+  --secondary: var(--design-surface-soft);
+  --secondary-foreground: var(--design-ink);
+  --muted: var(--design-surface-soft);
+  --muted-foreground: var(--design-muted);
+  --accent: var(--design-surface-soft);
+  --accent-foreground: var(--design-ink);
+  --destructive: var(--design-error);
+  --border: var(--design-hairline);
+  --input: var(--design-hairline);
+  --ring: var(--design-primary);
+  --chart-1: var(--design-primary);
+  --chart-2: var(--design-accent-teal);
+  --chart-3: var(--design-accent-amber);
+  --chart-4: var(--design-muted);
+  --chart-5: var(--design-body);
+  --radius: var(--design-radius-md);
+  --sidebar: var(--design-canvas);
+  --sidebar-foreground: var(--design-ink);
+  --sidebar-primary: var(--design-primary);
+  --sidebar-primary-foreground: var(--design-on-primary);
+  --sidebar-accent: var(--design-surface-soft);
+  --sidebar-accent-foreground: var(--design-ink);
+  --sidebar-border: var(--design-hairline);
+  --sidebar-ring: var(--design-primary);
+
+  /* Legacy auth aliases → design system */
+  --auth-cream: var(--design-canvas);
+  --auth-navy: var(--design-ink);
+  --auth-teal: var(--design-primary);
+  --auth-teal-hover: var(--design-primary-active);
 }
 
 .dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.922 0 0);
-  --primary-foreground: oklch(0.205 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.87 0 0);
-  --chart-2: oklch(0.556 0 0);
-  --chart-3: oklch(0.439 0 0);
-  --chart-4: oklch(0.371 0 0);
-  --chart-5: oklch(0.269 0 0);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
+  --background: var(--design-surface-dark);
+  --foreground: var(--design-on-dark);
+  --card: var(--design-surface-dark-elevated);
+  --card-foreground: var(--design-on-dark);
+  --popover: var(--design-surface-dark-elevated);
+  --popover-foreground: var(--design-on-dark);
+  --primary: var(--design-primary);
+  --primary-foreground: var(--design-on-primary);
+  --secondary: var(--design-surface-dark-soft);
+  --secondary-foreground: var(--design-on-dark);
+  --muted: var(--design-surface-dark-soft);
+  --muted-foreground: var(--design-on-dark-soft);
+  --accent: var(--design-surface-dark-soft);
+  --accent-foreground: var(--design-on-dark);
+  --destructive: var(--design-error);
+  --border: color-mix(in srgb, var(--design-on-dark) 12%, transparent);
+  --input: color-mix(in srgb, var(--design-on-dark) 15%, transparent);
+  --ring: var(--design-primary);
+  --sidebar: var(--design-surface-dark);
+  --sidebar-foreground: var(--design-on-dark);
+  --sidebar-primary: var(--design-primary);
+  --sidebar-primary-foreground: var(--design-on-primary);
+  --sidebar-accent: var(--design-surface-dark-soft);
+  --sidebar-accent-foreground: var(--design-on-dark);
+  --sidebar-border: color-mix(in srgb, var(--design-on-dark) 12%, transparent);
+  --sidebar-ring: var(--design-primary);
 }
 
 @layer base {
@@ -157,6 +162,22 @@
 }
 
 @layer utilities {
+  .text-design-body {
+    color: var(--design-body);
+  }
+  .text-design-muted {
+    color: var(--design-muted);
+  }
+  .bg-design-canvas {
+    background-color: var(--design-canvas);
+  }
+  .btn-design-primary {
+    background-color: var(--design-primary);
+    color: var(--design-on-primary);
+  }
+  .btn-design-primary:hover {
+    background-color: var(--design-primary-active);
+  }
   .auth-shine {
     position: relative;
     overflow: hidden;

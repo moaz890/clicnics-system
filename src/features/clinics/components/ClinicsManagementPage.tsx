@@ -47,23 +47,23 @@ export function ClinicsManagementPage() {
   };
 
   return (
-    <div className="flex flex-1 flex-col gap-6 bg-slate-50 p-6 dark:bg-slate-950 sm:p-8">
+    <div className="flex flex-1 flex-col gap-6 bg-background p-6 sm:p-8">
       <motion.header
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between"
       >
         <div className="space-y-1 text-start">
-          <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground">
             {t("pageTitle")}
           </h1>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-muted-foreground">
             {t("pageSubtitle")}
           </p>
         </div>
         <Button
           onClick={openCreate}
-          className="cursor-pointer rounded-xl bg-teal-700 shadow-sm hover:bg-teal-800"
+          className="cursor-pointer rounded-xl bg-primary text-primary-foreground shadow-sm hover:bg-[var(--design-primary-active)]"
         >
           <Plus className="size-4" aria-hidden />
           {t("addClinic")}
@@ -78,14 +78,14 @@ export function ClinicsManagementPage() {
         <Card className="border-border/80 bg-card shadow-sm">
           <CardHeader className="flex flex-row items-center justify-between gap-4 pb-2">
             <div className="flex items-center gap-3">
-              <div className="flex size-10 items-center justify-center rounded-xl bg-teal-700/10 text-teal-700">
+              <div className="flex size-10 items-center justify-center rounded-xl bg-primary/10 text-primary">
                 <Building2 className="size-5" aria-hidden />
               </div>
               <CardTitle className="text-base font-semibold text-popover-foreground">
                 {t("totalActiveClinics")}
               </CardTitle>
             </div>
-            <p className="text-2xl font-bold tabular-nums text-teal-700">
+            <p className="text-2xl font-bold tabular-nums text-primary">
               {activeCount}
               <span className="ms-1 text-sm font-normal text-muted-foreground">
                 / {clinics.length}

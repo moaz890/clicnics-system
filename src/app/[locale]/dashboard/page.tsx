@@ -10,9 +10,11 @@ export default async function DashboardPage({
   const t = await getTranslations("dashboard");
 
   return (
-    <main className="flex flex-1 flex-col gap-4 p-8">
-      <h1 className="text-2xl font-semibold">{t("title")}</h1>
-      <p className="text-muted-foreground">{t("welcome")}</p>
-    </main>
+    <div className="flex flex-1 flex-col gap-4 p-8">
+      <h1 className="text-2xl font-bold tracking-tight text-foreground">
+        {t("title")}
+      </h1>
+      <p className="text-sm text-muted-foreground">{t("welcome")}</p>
+    </div>
   );
 }

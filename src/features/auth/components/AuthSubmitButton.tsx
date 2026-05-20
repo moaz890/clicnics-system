@@ -27,7 +27,7 @@ export function AuthSubmitButton({
           type="submit"
           disabled={loading}
           className={cn(
-            "h-11 w-full cursor-pointer rounded-xl bg-teal-700 text-sm font-semibold text-white shadow-sm hover:bg-teal-800",
+            "h-11 w-full cursor-pointer rounded-xl bg-primary text-sm font-semibold text-primary-foreground shadow-sm hover:bg-[var(--design-primary-active)]",
             className,
           )}
         >

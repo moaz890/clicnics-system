@@ -60,7 +60,7 @@ export function ClinicDetailView({ clinicId }: ClinicDetailViewProps) {
   }
 
   return (
-    <div className="flex flex-1 flex-col gap-6 bg-slate-50 p-6 dark:bg-slate-950 sm:p-8">
+    <div className="flex flex-1 flex-col gap-6 bg-background p-6 sm:p-8">
       <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
         <div className="space-y-3 text-start">
           <Link
@@ -71,12 +71,12 @@ export function ClinicDetailView({ clinicId }: ClinicDetailViewProps) {
             {t("backToList")}
           </Link>
           <div className="flex flex-wrap items-center gap-3">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-900 dark:text-slate-50">
+            <h1 className="text-2xl font-bold tracking-tight text-foreground">
               {clinic.name}
             </h1>
             <ClinicStatusBadge isActive={clinic.isActive} />
           </div>
-          <p className="text-sm text-slate-600 dark:text-slate-400">
+          <p className="text-sm text-muted-foreground">
             {clinic.address}
           </p>
         </div>

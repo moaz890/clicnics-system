@@ -124,7 +124,7 @@ export function LoginForm() {
             <div className="flex justify-end">
               <Link
                 href="/forgot-password"
-                className="cursor-pointer text-sm text-primary transition-colors hover:text-teal-800 hover:underline"
+                className="cursor-pointer text-sm text-primary transition-colors hover:text-[var(--design-primary-active)] hover:underline"
               >
                 {t("forgotPassword")}
               </Link>
@@ -154,7 +154,7 @@ export function LoginForm() {
         {t("noAccount")}{" "}
         <Link
           href="/register"
-          className="cursor-pointer font-semibold text-primary transition-colors hover:text-teal-800 hover:underline"
+          className="cursor-pointer font-semibold text-primary transition-colors hover:text-[var(--design-primary-active)] hover:underline"
         >
           {t("signUp")}
         </Link>
