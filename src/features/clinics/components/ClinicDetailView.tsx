@@ -118,7 +118,7 @@ export function ClinicDetailView({ clinicId }: ClinicDetailViewProps) {
           <ClinicScheduleTab clinic={clinic} />
         </TabsContent>
         <TabsContent value="slots" className="mt-0 outline-none">
-          <ClinicSlotsTab clinicId={clinic.id} />
+          <ClinicSlotsTab clinicId={clinic.id} clinicName={clinic.name} />
         </TabsContent>
       </Tabs>
 

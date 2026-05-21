@@ -43,7 +43,7 @@ export function ClinicOverviewTab({ clinic }: { clinic: Clinic }) {
               <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
                 {item.label}
               </p>
-              <p className="text-sm font-medium text-popover-foreground">
+              <p className="min-w-0 text-sm font-medium text-popover-foreground">
                 {item.ltr ? (
                   <LtrText>{item.value}</LtrText>
                 ) : (

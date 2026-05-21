@@ -4,9 +4,11 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { NAV_LINKS } from "./nav-links";
+import { useNavLabel } from "./useNavLabel";
 
 export function DesktopNavLinks() {
   const t = useTranslations("nav");
+  const navLabel = useNavLabel;
   const pathname = usePathname();
 
   return (
@@ -26,7 +28,7 @@ export function DesktopNavLinks() {
               )}
             >
               <Icon className="size-4 opacity-70" aria-hidden />
-              {t(labelKey)}
+              {navLabel(labelKey)}
             </Link>
           </li>
         );

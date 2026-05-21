@@ -13,9 +13,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { NAV_LINKS } from "./nav-links";
+import { useNavLabel } from "./useNavLabel";
 
 export function MobileNavSheet() {
   const t = useTranslations("nav");
+  const navLabel = useNavLabel;
   const pathname = usePathname();
   const locale = useLocale();
   const isRtl = locale === "ar";
@@ -63,7 +65,7 @@ export function MobileNavSheet() {
                 )}
               >
                 <Icon className="size-4 shrink-0 opacity-80" aria-hidden />
-                {t(labelKey)}
+                {navLabel(labelKey)}
               </Link>
             );
           })}

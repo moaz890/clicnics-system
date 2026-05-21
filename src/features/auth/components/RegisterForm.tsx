@@ -37,10 +37,8 @@ export function RegisterForm() {
   const form = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      name: "",
       email: "",
-      phoneNumber: "",
       password: "",
       confirmPassword: "",
       acceptTerms: false,
@@ -50,10 +48,8 @@ export function RegisterForm() {
   const onSubmit = async (values: RegisterFormValues) => {
     try {
       await registerUser({
-        firstName: values.firstName,
-        lastName: values.lastName,
+        name: values.name,
         email: values.email,
-        phoneNumber: values.phoneNumber,
         password: values.password,
         confirmPassword: values.confirmPassword,
       }).unwrap();
@@ -76,61 +72,32 @@ export function RegisterForm() {
           initial="hidden"
           animate="show"
         >
-          <div className="grid gap-4 sm:grid-cols-2">
-            <motion.div variants={staggerItem}>
-              <FormField
-                control={form.control}
-                name="firstName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-start">{t("firstName")}</FormLabel>
-                    <FormControl>
-                      <AuthFormInput
-                        {...field}
-                        type="text"
-                        autoComplete="given-name"
-                        icon="user"
-                        placeholder={t("firstNamePlaceholder")}
-                      />
-                    </FormControl>
-                    <FormMessage>
-                      {resolveAuthFieldError(
-                        t,
-                        form.formState.errors.firstName?.message,
-                      )}
-                    </FormMessage>
-                  </FormItem>
-                )}
-              />
-            </motion.div>
-
-            <motion.div variants={staggerItem}>
-              <FormField
-                control={form.control}
-                name="lastName"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="text-start">{t("lastName")}</FormLabel>
-                    <FormControl>
-                      <AuthFormInput
-                        {...field}
-                        type="text"
-                        autoComplete="family-name"
-                        icon="user"
-                        placeholder={t("lastNamePlaceholder")}
-                      />
-                    </FormControl>
-                    <FormMessage>
-                      {resolveAuthFieldError(
-                        t,
-                        form.formState.errors.lastName?.message,
-                      )}
-                    </FormMessage>
-                  </FormItem>
-                )}
-              />
-            </motion.div>
-          </div>
+          <motion.div variants={staggerItem}>
+            <FormField
+              control={form.control}
+              name="name"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel className="sr-only">{t("name")}</FormLabel>
+                  <FormControl>
+                    <AuthFormInput
+                      {...field}
+                      type="text"
+                      autoComplete="name"
+                      icon="user"
+                      placeholder={t("name")}
+                    />
+                  </FormControl>
+                  <FormMessage>
+                    {resolveAuthFieldError(
+                      t,
+                      form.formState.errors.name?.message,
+                    )}
+                  </FormMessage>
+                </FormItem>
+              )}
+            />
+          </motion.div>
 
           <motion.div variants={staggerItem}>
             <FormField
@@ -138,7 +105,7 @@ export function RegisterForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel className="text-start">{t("emailAddress")}</FormLabel>
+                  <FormLabel>{t("emailAddress")}</FormLabel>
                   <FormControl>
                     <AuthFormInput
                       {...field}
@@ -152,35 +119,6 @@ export function RegisterForm() {
                     {resolveAuthFieldError(
                       t,
                       form.formState.errors.email?.message,
-                    )}
-                  </FormMessage>
-                </FormItem>
-              )}
-            />
-          </motion.div>
-
-          <motion.div variants={staggerItem}>
-            <FormField
-              control={form.control}
-              name="phoneNumber"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel className="text-start">{t("phoneNumber")}</FormLabel>
-                  <FormControl>
-                    <AuthFormInput
-                      {...field}
-                      type="tel"
-                      autoComplete="tel"
-                      icon="user"
-                      placeholder={t("phonePlaceholder")}
-                      className="text-start"
-                      dir="ltr"
-                    />
-                  </FormControl>
-                  <FormMessage>
-                    {resolveAuthFieldError(
-                      t,
-                      form.formState.errors.phoneNumber?.message,
                     )}
                   </FormMessage>
                 </FormItem>

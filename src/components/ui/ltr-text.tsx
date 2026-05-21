@@ -11,7 +11,7 @@ export function LtrText({ children, className }: LtrTextProps) {
     <span
       dir="ltr"
       className={cn(
-        "inline-block max-w-full text-start [unicode-bidi:isolate]",
+        "block w-full max-w-full text-start [unicode-bidi:isolate]",
         className,
       )}
     >
