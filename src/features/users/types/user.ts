@@ -3,7 +3,11 @@ export const USER_ROLES = [
   "doctor",
   "reception",
   "patient",
+  "user",
 ] as const;
+
+/** Default role for self-service registration (no role picker). */
+export const REGISTER_USER_ROLE = "user" as const;
 
 export const INTERNAL_USER_ROLES = ["admin", "doctor", "reception"] as const;
 
@@ -36,7 +40,7 @@ export interface CreateUserPayload {
   email: string;
   password: string;
   phoneNumber: string;
-  role: InternalUserRole;
+  role: UserRole;
 }
 
 export interface UpdateUserPayload {

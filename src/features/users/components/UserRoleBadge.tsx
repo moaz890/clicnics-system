@@ -15,6 +15,7 @@ const roleStyles: Record<UserRole, string> = {
     "border-[var(--design-accent-amber)]/30 bg-[var(--design-accent-amber)]/10 text-[var(--design-accent-amber)]",
   patient:
     "border-[var(--design-hairline)] bg-[var(--design-surface-soft)] text-[var(--design-muted)]",
+  user: "border-border bg-muted text-muted-foreground",
 };
 
 export function UserRoleBadge({

@@ -21,7 +21,7 @@ function normalizeRole(value: unknown): UserRole {
   if ((USER_ROLES as readonly string[]).includes(role)) {
     return role as UserRole;
   }
-  return "patient";
+  return "user";
 }
 
 export function normalizeUser(raw: unknown): User {

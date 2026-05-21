@@ -16,6 +16,7 @@ export const USER_ROLE_LABEL_KEYS: Record<UserRole, string> = {
   doctor: "roleDoctor",
   reception: "roleReception",
   patient: "rolePatient",
+  user: "roleUser",
 };
 
 export const ROLE_FILTER_LABEL_KEYS: Record<UserRole | "all", string> = {
@@ -24,4 +25,5 @@ export const ROLE_FILTER_LABEL_KEYS: Record<UserRole | "all", string> = {
   doctor: "roleDoctor",
   reception: "roleReception",
   patient: "rolePatient",
+  user: "roleUser",
 };

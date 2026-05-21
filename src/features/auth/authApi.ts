@@ -11,17 +11,55 @@ import type {
   RegisterResponse,
 } from "@/types/auth";
 import { normalizeLoginResponse } from "@/lib/auth/normalize";
+import { REGISTER_USER_ROLE } from "@/features/users/types/user";
+import { userTags } from "@/features/users/store/usersApi";
 import { clearCredentials, setCredentials } from "./authSlice";
 
 export const authApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterRequest>({
-      query: (body) => ({
-        url: "/auth/register",
-        method: "POST",
-        body,
-      }),
-      transformResponse: (raw: unknown) => normalizeLoginResponse(raw),
+      async queryFn(body, _api, _extraOptions, baseQuery) {
+        const createResult = await baseQuery({
+          url: "/user",
+          method: "POST",
+          body: {
+            firstName: body.firstName.trim(),
+            lastName: body.lastName.trim(),
+            email: body.email.trim(),
+            password: body.password,
+            phoneNumber: body.phoneNumber.trim(),
+            role: REGISTER_USER_ROLE,
+          },
+        });
+
+        if (createResult.error) {
+          return { error: createResult.error };
+        }
+
+        try {
+          return {
+            data: normalizeLoginResponse(createResult.data),
+          };
+        } catch {
+          const loginResult = await baseQuery({
+            url: "/auth/login",
+            method: "POST",
+            body: {
+              email: body.email.trim(),
+              password: body.password,
+            },
+          });
+
+          if (loginResult.error) {
+            return { error: loginResult.error };
+          }
+
+          return {
+            data: normalizeLoginResponse(loginResult.data),
+          };
+        }
+      },
+      invalidatesTags: userTags.all,
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
         try {
           const { data } = await queryFulfilled;

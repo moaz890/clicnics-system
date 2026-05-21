@@ -30,8 +30,10 @@ export interface ChangePasswordRequest {
 }
 
 export interface RegisterRequest {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
+  phoneNumber: string;
   password: string;
   confirmPassword: string;
 }
