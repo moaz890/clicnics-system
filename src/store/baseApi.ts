@@ -13,9 +13,10 @@ import { redirectToLogin } from "@/lib/auth/redirect";
 import { isAccessTokenValid } from "@/lib/auth/token";
 import { applyTenantHeader } from "@/lib/tenant/extract";
 import { clearCredentials } from "@/features/auth/authSlice";
+import { getApiBaseUrl } from "@/lib/api/base-url";
 import type { AppDispatch } from "./store";
 
-const baseUrl = process.env.NEXT_PUBLIC_API_URL ?? "http://52.3.221.28:5050/api";
+const baseUrl = getApiBaseUrl();
 
 const rawBaseQuery = fetchBaseQuery({
   baseUrl,

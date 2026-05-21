@@ -23,9 +23,13 @@ export const authApi = baseApi.injectEndpoints({
       }),
       transformResponse: (raw: unknown) => normalizeLoginResponse(raw),
       async onQueryStarted(_arg, { dispatch, queryFulfilled }) {
-        const { data } = await queryFulfilled;
-        setAuthCookies(data.accessToken, data.refreshToken);
-        dispatch(setCredentials({ user: data.user }));
+        try {
+          const { data } = await queryFulfilled;
+          setAuthCookies(data.accessToken, data.refreshToken);
+          dispatch(setCredentials({ user: data.user }));
+        } catch {
+          /* Form reads mutation error state */
+        }
       },
     }),
 
@@ -75,11 +79,11 @@ export const authApi = baseApi.injectEndpoints({
       }),
     }),
 
-    logout: builder.mutation<void, void>({
+    logout: builder.mutation<null, void>({
       queryFn: async (_arg, { dispatch }) => {
         clearAuthCookies();
         dispatch(clearCredentials());
-        return { data: undefined };
+        return { data: null };
       },
       invalidatesTags: ["Auth"],
     }),

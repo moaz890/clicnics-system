@@ -44,7 +44,11 @@ export function UserMenu() {
   const initials = getInitials(user?.name, user?.email, user?.role);
 
   const handleLogout = async () => {
-    await logout();
+    try {
+      await logout().unwrap();
+    } catch {
+      /* Local session is cleared in queryFn even when dispatch fails */
+    }
     router.replace("/login");
   };
 

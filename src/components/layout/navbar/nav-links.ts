@@ -1,9 +1,13 @@
 import type { LucideIcon } from "lucide-react";
-import { Building2, LayoutDashboard, User } from "lucide-react";
+import { Building2, LayoutDashboard, User, Users } from "lucide-react";
 
 export type NavLinkItem = {
-  href: "/dashboard" | "/dashboard/profile" | "/dashboard/clinics";
-  labelKey: "dashboard" | "viewProfile" | "clinics";
+  href:
+    | "/dashboard"
+    | "/dashboard/profile"
+    | "/dashboard/clinics"
+    | "/dashboard/users";
+  labelKey: "dashboard" | "viewProfile" | "clinics" | "users";
   icon: LucideIcon;
   mobileOnly?: boolean;
 };
@@ -19,6 +23,11 @@ export const NAV_LINKS: NavLinkItem[] = [
     href: "/dashboard/clinics",
     labelKey: "clinics",
     icon: Building2,
+  },
+  {
+    href: "/dashboard/users",
+    labelKey: "users",
+    icon: Users,
   },
   {
     href: "/dashboard/profile",
